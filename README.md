@@ -149,6 +149,3 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 4. Navigate to Interfacing Options > SPI > Enable.
 
 5. Run the client script
-   ```bash
-    python3 raspberry_client.py
-   ```
