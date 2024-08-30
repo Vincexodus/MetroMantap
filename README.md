@@ -121,7 +121,7 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 16. Start telegraf service
 
     ```bash
-    python3 pc_server.py
+    py pc_server.py
     ```
 
 ### Client Setup - Raspberry Pi 4
@@ -148,4 +148,4 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 4. Navigate to Interfacing Options > SPI > Enable.
 
-5. Run the client script
+5. Run `raspberry_client.py` in Thonny IDE.
