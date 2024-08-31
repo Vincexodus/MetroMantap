@@ -1,4 +1,4 @@
-# Train-Density-Monitor-RTS
+# Train Density Monitor - Real Time System (RTS)
 
 Real-Time Crowd Management System for train stations using sensor technology, AI-driven analytics, and real-time data processing to improve passenger flow, reduce congestion, and optimize train operations and scheduling.
 
