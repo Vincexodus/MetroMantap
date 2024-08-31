@@ -1,14 +1,32 @@
+import os
+import math
+import numpy as np
 import cv2
 import socket
 import struct
 import pickle
-import math
+from dotenv import load_dotenv
 from ultralytics import YOLOv10
+from object_classes import classNames
+from influxdb_client import InfluxDBClient, Point, WriteOptions
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+load_dotenv()
+
+influxdb_url = os.getenv("INFLUXDB_URL")
+influxdb_token = os.getenv("INFLUXDB_TOKEN")
+influxdb_org = os.getenv("INFLUXDB_ORG")
+influxdb_bucket = os.getenv("INFLUXDB_BUCKET")
+
+# Initialize InfluxDB client
+client = InfluxDBClient(url=influxdb_url, token=influxdb_token, org=influxdb_org)
+write_api = client.write_api(write_options=SYNCHRONOUS)
+
+host_ip = os.getenv("HOST_IP")
+port = int(os.getenv("PORT"))
 
 # Setup socket to receive video stream
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host_ip = '192.168.0.126'  # IP address of the server
-port = 9999  # Port to listen on
 
 server_socket.bind((host_ip, port))
 server_socket.listen(5)
@@ -20,22 +38,18 @@ print(f"Connection from: {addr}")
 data = b""
 payload_size = struct.calcsize("!L")
 
-# object classes
-classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
-              "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
-              "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
-              "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
-              "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
-              "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
-              "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed",
-              "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone",
-              "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
-              "teddy bear", "hair drier", "toothbrush"
-              ]
-
 # Load the pretrained YOLOv10 model
-model = YOLOv10.from_pretrained('jameslahm/yolov10n')
-COLOR_RED = (0, 0, 255)
+yolo_model_name = os.getenv("YOLO_MODEL_NAME")
+model = YOLOv10.from_pretrained(yolo_model_name)
+
+def generate_color(index):
+    """
+    Generate a unique color for each index.
+    :param index: Index or ID of the bounding box
+    :return: A tuple representing the color in BGR format
+    """
+    np.random.seed(index)  # Seed the random number generator for reproducibility
+    return tuple(np.random.randint(0, 256, 3).tolist())  # Generate a random color
 
 try:
     while True:
@@ -86,13 +100,14 @@ try:
             for r in results:
                 boxes = r.boxes
 
-                for box in boxes:
+                for i, box in enumerate(boxes):
                     # bounding box
                     x1, y1, x2, y2 = box.xyxy[0]
                     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2) # convert to int values
 
+                    color = generate_color(i)
                     # put box in cam
-                    cv2.rectangle(frame, (x1, y1), (x2, y2), COLOR_RED, 1)
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
 
                     # confidence
                     confidence = math.ceil((box.conf[0]*100))/100
@@ -102,7 +117,21 @@ try:
                     objectInfo = classNames[cls] + " " + str(confidence)
 
                     # append prediction details to frame
-                    cv2.putText(frame, objectInfo, org=[x1, y1-5], fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=COLOR_RED, thickness=1)
+                    cv2.putText(frame, objectInfo, org=[x1, y1-5], fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=color, thickness=2)
+
+                    # Push bounding box data to InfluxDB
+                    point = Point("passenger_detection") \
+                        .tag("class", classNames[cls]) \
+                        .field("confidence", confidence) \
+                        .field("x1", x1) \
+                        .field("y1", y1) \
+                        .field("x2", x2) \
+                        .field("y2", y2)
+                    write_api.write(bucket=influxdb_bucket, org=influxdb_org, record=point)
+
+            for sensor, value in fsr_values.items():
+                point = Point("fsr_readings").tag("sensor", sensor).field("value", value)
+                write_api.write(bucket=influxdb_bucket, org=influxdb_org, record=point)
 
         except Exception as e:
             print(f"Server: Deserialization error: {e}")
