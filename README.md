@@ -118,7 +118,19 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
     | Organization   | `NextGenHackathon`                              |
     | Organization   | `<TELEGRAF_ALL_ACCESS_API_TOKEN>`               |
 
-16. Start telegraf service
+16. Clone the repo and install python modules
+
+    ```bash
+    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\ && pip install -r requirements.txt
+    ```
+
+17. Activate python virtual environment
+
+    ```bash
+    venv\Scripts\activate
+    ```
+
+18. Run server script
 
     ```bash
     py pc_server.py
@@ -126,26 +138,18 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 ### Client Setup - Raspberry Pi 4
 
-1. Install OpenCV for Video Capture
+1. Clone the repo and install python modules
 
-   ```bash
-    sudo apt-get update
-    sudo apt-get install python3-opencv
-   ```
+    ```bash
+    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\ && pip install -r requirements.txt
+    ```
 
-2. Install SPI-Py and Spidev for SPI Communication with ADC
-
-   ```bash
-    sudo apt-get install python3-dev python3-pip
-    sudo pip3 install spidev
-   ```
-
-3. Enable SPI on the Raspberry Pi
+2. Enable SPI on the Raspberry Pi
 
    ```bash
     sudo raspi-config
    ```
 
-4. Navigate to Interfacing Options > SPI > Enable.
+3. Navigate to Interfacing Options > SPI > Enable.
 
-5. Run `raspberry_client.py` in Thonny IDE.
+4. Run `raspberry_client.py` in Thonny IDE.

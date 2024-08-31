@@ -1,0 +1,4 @@
+opencv-python
+spidev
+git+https://github.com/THU-MIG/yolov10.git
+safetensors

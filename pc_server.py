@@ -2,6 +2,8 @@ import cv2
 import socket
 import struct
 import pickle
+import math
+from ultralytics import YOLOv10
 
 # Setup socket to receive video stream
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,6 +19,23 @@ print(f"Connection from: {addr}")
 
 data = b""
 payload_size = struct.calcsize("!L")
+
+# object classes
+classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
+              "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
+              "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
+              "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
+              "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
+              "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
+              "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed",
+              "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone",
+              "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
+              "teddy bear", "hair drier", "toothbrush"
+              ]
+
+# Load the pretrained YOLOv10 model
+model = YOLOv10.from_pretrained('jameslahm/yolov10n')
+COLOR_RED = (0, 0, 255)
 
 try:
     while True:
@@ -61,12 +80,36 @@ try:
             # Decode frame back from JPEG
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
 
+            # Predict using YOLOv10 model
+            results = model.predict(frame, stream=True)
+
+            for r in results:
+                boxes = r.boxes
+
+                for box in boxes:
+                    # bounding box
+                    x1, y1, x2, y2 = box.xyxy[0]
+                    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2) # convert to int values
+
+                    # put box in cam
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), COLOR_RED, 1)
+
+                    # confidence
+                    confidence = math.ceil((box.conf[0]*100))/100
+
+                    # class name
+                    cls = int(box.cls[0])
+                    objectInfo = classNames[cls] + " " + str(confidence)
+
+                    # append prediction details to frame
+                    cv2.putText(frame, objectInfo, org=[x1, y1-5], fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5, color=COLOR_RED, thickness=1)
+
         except Exception as e:
             print(f"Server: Deserialization error: {e}")
             break
 
         # Display the frame
-        cv2.imshow('Video Stream', frame)
+        cv2.imshow('Video Stream with YOLOv10 Prediction', frame)
 
         # Press 'q' on the keyboard to exit the loop
         if cv2.waitKey(1) & 0xFF == ord('q'):
