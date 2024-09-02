@@ -1,136 +1,80 @@
 # Train Density Monitor - Real Time System (RTS)
 
-Real-Time Crowd Management System for train stations using sensor technology, AI-driven analytics, and real-time data processing to improve passenger flow, reduce congestion, and optimize train operations and scheduling.
+Real-Time Crowd Management System for train stations using sensor technology, AI-driven analytics, and real-time data processing to improve passenger flow, reduce congestion, and optimize train operations and scheduling
+
+### To-Do List
+
+| Task                                      | Status                  |
+| ----------------------------------------- | ----------------------- |
+| Socket setup & Raspberry PI wiring        | ✅ Done                 |
+| PC-Raspberry Pi socket communication      | ✅ Done                 |
+| Combine camera feed + sensor reading      | ✅ Done                 |
+| YOLOv10 Prediction & feed display         | ✅ Done                 |
+| Integration with InfluxDB & Grafana       | ✅ Done                 |
+| Dashboard Display on Grafana              | ✅ Done, Pending Review |
+| FPS & Latency Display on PC               | 🔨 Work in Progress     |
+| Fix socket communication high latency     | 🔨 Work in Progress     |
+| Security measure for socket communication | ❌ Not started          |
+| Demo Scene Setup                          | ❌ Not started          |
+| Revamp Architecture Diagram               | ❌ Not started          |
+| Revamp Poster Design                      | ❌ Not started          |
 
 ### Server Setup - Central Processing (PC)
 
-1. Setup InfluxDB [here](https://docs.influxdata.com/influxdb/v2/install/?t=Windows)
+1. Navigate to [influxData cloud](https://us-east-1-1.aws.cloud2.influxdata.com) to create a bucket called `Main`
 
-2. Extract the zip into `C:\Program Files\InfluxData\influxdb`
+2. Under API Tokens, create `All Access API Token` & copy the token
 
-3. Start InfluxDB
+3. Download [Grafana installer](https://grafana.com/grafana/download?platform=windows)
 
-   ```bash
-    cd -Path 'C:\Program Files\InfluxData\influxdb'
-    ./influxd
-   ```
+4. Start grafana by running `grafana-server.exe` in `bin` directory
 
-4. Download telegraf using powershell
+5. Open browser with address `http://localhost:3000/`, login with `admin` `admin`
 
-   ```bash
-    wget `
-    https://dl.influxdata.com/telegraf/releases/telegraf-1.31.3_windows_amd64.zip `
-    -UseBasicParsing `
-    -OutFile telegraf-1.31.3_windows_amd64.zip
-    Expand-Archive .\telegraf-1.31.3_windows_amd64.zip `
-    -DestinationPath 'C:\Program Files\Telegraf\'
-   ```
+6. Under `Home > Connections > Data sources`, add influxDB as data source
 
-5. Extract the zip fie & move `telegraf.exe` & `telegraf.conf` from `C:\Program Files\Telegraf\telegraf-1.31.3` to `C:\Program Files\Telegraf`
+7. influxDB data source config:
 
-6. Install telegraf as Windows service
+   | Param          | Value                                           |
+   | -------------- | ----------------------------------------------- |
+   | Query Language | `Flux`                                          |
+   | URL            | `https://us-east-1-1.aws.cloud2.influxdata.com` |
+   | Organization   | `NextGen Hackathon`                             |
+   | Token          | `<ALL_ACCESS_API_TOKEN>`                        |
 
-   ```bash
-    # > C:\Program Files\Telegraf
-    .\telegraf.exe --service install `
-    --config "C:\Program Files\Telegraf\telegraf.conf"
-   ```
+8. Under `Home > Dashboards`, add visualization for new dashboard
 
-7. Create infuxData bucket called `Main` [here](https://us-east-1-1.aws.cloud2.influxdata.com)
-
-8. Replace `OUTPUTS PLUGINS` section of `telegraf.conf`
+9. Paste code example (written in Flux) to display FSR sensor readings for past 3 hours
 
    ```bash
-    [[outputs.influxdb_v2]]
-      ## The URLs of the InfluxDB cluster nodes.
-      ##
-      ## Multiple URLs can be specified for a single cluster, only ONE of the
-      ## urls will be written to each interval.
-      ##   ex: urls = ["https://us-west-2-1.aws.cloud2.influxdata.com"]
-      urls = ["https://us-east-1-1.aws.cloud2.influxdata.com"]
-
-      ## API token for authentication.
-      token = "$INFLUX_TOKEN"
-
-      ## Organization is the name of the organization you wibash to write to; must exist.
-      organization = "NextGen Hackathon"
-
-      ## Destination bucket to write into.
-      bucket = "Main"
-
-      ## The value of this tag will be used to determine the bucket.  If this
-      ## tag is not set the 'bucket' option is used as the default.
-      # bucket_tag = ""
-
-      ## If true, the bucket tag will not be added to the metric.
-      # exclude_bucket_tag = false
-
-      ## Timeout for HTTP messages.
-      # timeout = "5s"
-
-      ## Additional HTTP headers
-      # http_headers = {"X-Special-Header" = "Special-Value"}
-
-      ## HTTP Proxy override, if unset values the standard proxy environment
-      ## variables are consulted to determine which proxy, if any, bashould be used.
-      # http_proxy = "http://corporate.proxy:3128"
-
-      ## HTTP User-Agent
-      # user_agent = "telegraf"
-
-      ## Content-Encoding for write request body, can be set to "gzip" to
-      ## compress body or "identity" to apply no encoding.
-      # content_encoding = "gzip"
-
-      ## Enable or disable uint support for writing uints influxdb 2.0.
-      # influx_uint_support = false
-
-      ## Optional TLS Config for use on HTTP connections.
-      # tls_ca = "/etc/telegraf/ca.pem"
-      # tls_cert = "/etc/telegraf/cert.pem"
-      # tls_key = "/etc/telegraf/key.pem"
-      ## Use TLS but skip chain & host verification
-      # insecure_skip_verify = false
+    from(bucket: "Main")
+      |> range(start: -3h)
+      |> filter(fn: (r) => r._measurement == "sensor_data")
+      |> filter(fn: (r) => r._field == "fsr1" or r._field == "fsr2" or r._field == "fsr3")
    ```
 
-9. Start telegraf service
+8. Clone the repo
 
    ```bash
-    .\telegraf  --config "C:\Program Files\Telegraf\telegraf.conf"
+   git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
    ```
 
-10. Create all access api token for grafana [here](https://us-east-1-1.aws.cloud2.influxdata.com)
+9. Duplicate `.env.example`, rename duplicated file to `.env.local` and replace the values accordingly
 
-11. Download Grafana (installer) [here](https://grafana.com/grafana/download?platform=windows)
-
-12. Start grafana by running `grafana-server.exe` in `bin` directory
-
-13. Open browser with address `http://localhost:3000/`, login with `admin` `admin`
-
-14. Under `Home > Connections > Data sources` add influxDB as data source
-
-15. influxDB data source config:
-
-    | Param          | Value                                           |
-    | -------------- | ----------------------------------------------- |
-    | Query Language | `Flux`                                          |
-    | URL            | `https://us-east-1-1.aws.cloud2.influxdata.com` |
-    | Organization   | `NextGenHackathon`                              |
-    | Organization   | `<TELEGRAF_ALL_ACCESS_API_TOKEN>`               |
-
-16. Clone the repo and install python modules
+10. Create virtual python environment and activate it
 
     ```bash
-    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\ && pip install -r requirements.txt
-    ```
-
-17. Activate python virtual environment
-
-    ```bash
+    virtualenv venv
     venv\Scripts\activate
     ```
 
-18. Run server script
+10. Download necessary python modules
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+11. Run server script
 
     ```bash
     py pc_server.py
@@ -140,9 +84,10 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 1. Clone the repo and install python modules
 
-    ```bash
-    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\ && pip install -r requirements.txt
-    ```
+   ```bash
+   git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
+   sudo pip install opencv-python spidev
+   ```
 
 2. Enable SPI on the Raspberry Pi
 
@@ -152,4 +97,4 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 3. Navigate to Interfacing Options > SPI > Enable.
 
-4. Run `raspberry_client.py` in Thonny IDE.
+4. Run client script`raspberry_client.py` in Thonny IDE

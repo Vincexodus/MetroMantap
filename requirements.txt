@@ -1,6 +1,6 @@
+python-dotenv
 opencv-python
 spidev
-git+https://github.com/THU-MIG/yolov10.git
 safetensors
+git+https://github.com/THU-MIG/yolov10.git
 influxdb-client
-python-dotenv
