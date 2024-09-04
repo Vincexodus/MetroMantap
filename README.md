@@ -4,20 +4,19 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 ### To-Do List
 
-| Task                                      | Status                  |
-| ----------------------------------------- | ----------------------- |
-| Socket setup & Raspberry PI wiring        | ✅ Done                 |
-| PC-Raspberry Pi socket communication      | ✅ Done                 |
-| Combine camera feed + sensor reading      | ✅ Done                 |
-| YOLOv10 Prediction & feed display         | ✅ Done                 |
-| Integration with InfluxDB & Grafana       | ✅ Done                 |
-| Dashboard Display on Grafana              | ✅ Done, Pending Review |
-| FPS & Latency Display on PC               | 🔨 Work in Progress     |
-| Fix socket communication high latency     | 🔨 Work in Progress     |
-| Security measure for socket communication | ❌ Not started          |
-| Demo Scene Setup                          | ❌ Not started          |
-| Revamp Architecture Diagram               | ❌ Not started          |
-| Revamp Poster Design                      | ❌ Not started          |
+| Task                                         | Status                  |
+| -------------------------------------------- | ----------------------- |
+| Socket setup & Raspberry PI wiring           | ✅ Done                 |
+| PC-Raspberry Pi socket communication         | ✅ Done                 |
+| Combine camera feed + sensor reading         | ✅ Done                 |
+| YOLOv10 Prediction & feed display            | ✅ Done                 |
+| Integration with InfluxDB & Grafana          | ✅ Done                 |
+| Dashboard Display on Grafana                 | ✅ Done                 |
+| Train occupancy adjustment (bounding box ✅, gesture when stopping 🔨)    | 🔨WIP      |
+| Option to trasmit sample cabin footage       | 🔨WIP                   |
+| Demo Scene Setup                             | ❌ Not started          |
+| FPS & Latency Display on PC                  | ❌ Not needed yet       |
+| Security measure for socket communication    | ❌ Not needed yet       |
 
 ### Server Setup - Central Processing (PC)
 
