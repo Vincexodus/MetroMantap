@@ -2,5 +2,4 @@ python-dotenv
 opencv-python
 spidev
 safetensors
-git+https://github.com/THU-MIG/yolov10.git
 influxdb-client
