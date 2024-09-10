@@ -4,7 +4,6 @@ import cv2
 import socket
 import struct
 import pickle
-import keyboard  # To detect keyboard inputs
 
 # Initialize SPI for ADC
 spi = spidev.SpiDev()
@@ -37,35 +36,38 @@ encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]  # Quality scale (0-100)
 
 # Dictionary to map keys to train statuses for both cabins
 train_status_c1 = {
-    '1': 'starting',
-    '2': 'running',
-    '3': 'stopping'
+    ord('1'): 'starting',
+    ord('2'): 'running',
+    ord('3'): 'slowing_down'
 }
 
 train_status_c2 = {
-    '4': 'starting',
-    '5': 'running',
-    '6': 'stopping'
+    ord('4'): 'starting',
+    ord('5'): 'running',
+    ord('6'): 'slowing_down'
 }
 
 c1_status = 'running'  # Default status for cabin 1
 c2_status = 'running'  # Default status for cabin 2
 
+cv2.namedWindow("ControlWindow", cv2.WINDOW_NORMAL)
+
 try:
     while True:
-        # Check for keyboard input to update cabin 1 status
-        for key in train_status_c1.keys():
-            if keyboard.is_pressed(key):
-                c1_status = train_status_c1[key]
-                print(f"Client: Cabin 1 status changed to {c1_status}")
-                break
+        # Capture first video frame
+        ret1, frame1 = cap.read()
+        if not ret1:
+            print("Client: Error: Could not read first frame.")
+            break
 
-        # Check for keyboard input to update cabin 2 status
-        for key in train_status_c2.keys():
-            if keyboard.is_pressed(key):
-                c2_status = train_status_c2[key]
-                print(f"Client: Cabin 2 status changed to {c2_status}")
-                break
+        # Check for keyboard input to update cabin statuses
+        key = cv2.waitKey(1) & 0xFF
+        if key in train_status_c1:
+            c1_status = train_status_c1[key]
+            print(f"Client: Cabin 1 status changed to {c1_status}")
+        elif key in train_status_c2:
+            c2_status = train_status_c2[key]
+            print(f"Client: Cabin 2 status changed to {c2_status}")
 
         # Read FSR values from ADC
         fsr1_value = read_adc(0)
@@ -73,12 +75,6 @@ try:
         fsr3_value = read_adc(2)
         c1_fsr_values = [fsr1_value, fsr2_value]
         c2_fsr_values = [fsr3_value, 0]
-
-        # Capture first video frame
-        ret1, frame1 = cap.read()
-        if not ret1:
-            print("Client: Error: Could not read first frame.")
-            break
 
         # Compress the frame using JPEG
         result1, encoded_img1 = cv2.imencode('.jpg', frame1, encode_param)
@@ -101,7 +97,7 @@ try:
         # Send the frame size and data to the server
         client_socket.sendall(message)
 
-        print(f"Client: C1 Status: {c1_status}, FSR Values: {c1_fsr_values}, C2 Status: {c2_status}, FSR Values: {c2_fsr_values},")
+        print(f"Client: C1 Status: {c1_status}, FSR Values: {c1_fsr_values}, C2 Status: {c2_status}, FSR Values: {c2_fsr_values}")
         # Optional: Delay to control the rate of sending data
         time.sleep(0.5)
 
@@ -112,4 +108,5 @@ finally:
     cap.release()
     client_socket.close()
     spi.close()
+    cv2.destroyWindow("ControlWindow")
     print("Client: Camera released, socket closed, SPI connection closed.")

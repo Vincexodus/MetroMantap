@@ -12,63 +12,12 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from object_classes import classNames
 
-# Load environment variables
-load_dotenv('.env.local')
-
-# Configuration variables
-influxdb_url = os.getenv("INFLUXDB_URL")
-influxdb_token = os.getenv("INFLUXDB_TOKEN")
-influxdb_org = os.getenv("INFLUXDB_ORG")
-influxdb_bucket = os.getenv("INFLUXDB_BUCKET")
-host_ip = os.getenv("HOST_IP")
-port = int(os.getenv("PORT"))
-yolo_model_name = os.getenv("YOLO_MODEL_NAME")
-
-# Initialize InfluxDB client
-client = InfluxDBClient(url=influxdb_url, token=influxdb_token, org=influxdb_org)
-write_api = client.write_api(write_options=SYNCHRONOUS)
-
-model = YOLO("assets/YOLOv8m-pose.pt")
-
-# Setup socket to receive video stream
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind((host_ip, port))
-server_socket.listen(5)
-print(f"Server: Listening on {host_ip}:{port}")
-
-client_socket, addr = server_socket.accept()
-print(f"Connection from: {addr}")
-
-# Constants
-payload_size = struct.calcsize("!L")
-data = b""
-last_write_time = time.time()
-roi_x1, roi_y1 = 5, 20  # Top-left corner of ROI (region of interest)
-roi_x2, roi_y2 = 500, 500  # Bottom-right corner of ROI
-
-# Function definitions
-def generate_color(index):
-    """Generate a unique color for each index."""
-    np.random.seed(index)  # Seed for reproducibility
-    return tuple(np.random.randint(0, 256, 3).tolist())  # Generate a random color
-
-def calculate_overlap_area(x1, y1, x2, y2, roi_x1, roi_y1, roi_x2, roi_y2):
-    """Calculate the overlapping area between a bounding box and a region of interest (ROI)."""
-    inter_x1 = max(x1, roi_x1)
-    inter_y1 = max(y1, roi_y1)
-    inter_x2 = min(x2, roi_x2)
-    inter_y2 = min(y2, roi_y2)
-    inter_width = max(0, inter_x2 - inter_x1)
-    inter_height = max(0, inter_y2 - inter_y1)
-    return inter_width * inter_height
-
-# Define a function to calculate the angle between three keypoints
+# Calculate the angle between three keypoints
 def calculate_angle(a, b, c):
-    a = np.array(a)  # First point
-    b = np.array(b)  # Middle point
-    c = np.array(c)  # Last point
+    a = np.array(a)
+    b = np.array(b)
+    c = np.array(c)
     
-    # Calculate the angle in radians and convert it to degrees.
     radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
     angle = np.abs(radians * 180.0 / np.pi)
     
@@ -78,139 +27,181 @@ def calculate_angle(a, b, c):
 
     return angle
 
-# Main loop
-try:
-    while True:
-        # Retrieve message size
-        while len(data) < payload_size:
-            packet = client_socket.recv(4096)  # 4KB buffer size
-            if not packet:
-                print("Server: No data received. Closing connection.")
-                break
-            data += packet
+# Load environment variables
+def load_env_variables():
+    load_dotenv('.env.local')
+    return {
+        "influxdb_url": os.getenv("INFLUX_HOST"),
+        "influxdb_token": os.getenv("INFLUX_TOKEN"),
+        "influxdb_org": os.getenv("INFLUX_ORG"),
+        "influxdb_bucket": os.getenv("TRAIN_BUCKET"),
+        "host_ip": os.getenv("SOCKET_HOST_IP"),
+        "port": int(os.getenv("PORT"))
+    }
 
-        if len(data) < payload_size:
-            print("Server: Incomplete data received for message size. Exiting loop.")
+# Initialize InfluxDB client
+def initialize_influxdb(influxdb_url, influxdb_token, influxdb_org):
+    client = InfluxDBClient(url=influxdb_url, token=influxdb_token, org=influxdb_org)
+    return client.write_api(write_options=SYNCHRONOUS)
+
+# Setup socket to receive input data
+def setup_socket(host_ip, port):
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((host_ip, port))
+    server_socket.listen(5)
+    client_socket, addr = server_socket.accept()
+    return server_socket, client_socket, addr
+
+def handle_incoming_data(client_socket, payload_size, data):
+    while len(data) < payload_size:
+        packet = client_socket.recv(4096)
+        if not packet:
             break
+        data += packet
 
-        packed_msg_size = data[:payload_size]
-        data = data[payload_size:]
-        msg_size = struct.unpack("!L", packed_msg_size)[0]
+    if len(data) < payload_size:
+        return None, None
 
-        # Retrieve frame data
-        while len(data) < msg_size:
-            packet = client_socket.recv(4096)
-            if not packet:
-                print("Server: No more frame data received. Exiting loop.")
-                break
-            data += packet
+    packed_msg_size = data[:payload_size]
+    data = data[payload_size:]
+    msg_size = struct.unpack("!L", packed_msg_size)[0]
 
-        if len(data) < msg_size:
-            print(f"Server: Incomplete frame data received. Needed: {msg_size}, Received: {len(data)}. Exiting loop.")
+    while len(data) < msg_size:
+        packet = client_socket.recv(4096)
+        if not packet:
             break
+        data += packet
 
-        serialized_data = data[:msg_size]
-        data = data[msg_size:]
+    if len(data) < msg_size:
+        return None, None
 
-        try:
-            # Deserialize data
-            received_data = pickle.loads(serialized_data)
+    serialized_data = data[:msg_size]
+    data = data[msg_size:]
+
+    return pickle.loads(serialized_data), data
+
+def process_frame(c1_frame, results):
+    c1_people_count = 0
+    leaving_person_count = 0
+
+    for r in results:
+        boxes = r.boxes
+        keypoints_data = r.keypoints.data
+
+        for i, box in enumerate(boxes):
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            confidence = math.ceil((box.conf[0] * 100)) / 100
+            cls = int(box.cls[0])
+
+            if classNames[cls] == "person":
+                c1_people_count += 1
+                keypoints = keypoints_data[i]
+                if keypoints.shape[0] > 0:
+                    angle = calculate_angle(keypoints[11][:2], keypoints[13][:2], keypoints[15][:2])
+                    status = 'Sitting' if angle is not None and angle < 110 else 'Standing'
+                    color = (0, 255, 0) if status == 'Sitting' else (0, 0, 255)
+                    cv2.rectangle(c1_frame, (x1, y1), (x2, y2), color, 2)
+                    cv2.putText(c1_frame, f"{status}", (x1, y2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+                object_info = f"{classNames[cls]} {confidence}"
+                cv2.putText(c1_frame, object_info, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+    return c1_frame, c1_people_count, leaving_person_count
+
+def write_to_influx(write_api, bucket, org, c1_fsr_values, c2_fsr_values, c1_status, c2_status, c1_people_count, c2_people_count, last_write_time, current_time):
+    if current_time - last_write_time >= 1:
+        sensor_point = (Point("sensor_data")
+                        .field("fsr1", c1_fsr_values[0])
+                        .field("fsr2", c1_fsr_values[1])
+                        .field("fsr3", c2_fsr_values[0])
+                        .field("fsr4", c2_fsr_values[1])
+                        .field("c1_status", c1_status)
+                        .field("c2_status", c2_status)
+                        .field("c1_person", c1_people_count)
+                        .field("c2_person", c1_people_count))
+        write_api.write(bucket=bucket, org=org, record=sensor_point)
+        last_write_time = current_time
+    return last_write_time
+
+def process_single_frame(frame, model):
+    start_inference_time = time.time()
+    results = model(frame, show=False, stream=True, verbose=False)
+    yolo_latency = time.time() - start_inference_time
+
+    frame, people_count, leaving_person_count = process_frame(frame, results)
+
+    return frame, people_count, yolo_latency
+
+def annotate_frame(frame, status_text, yolo_latency, fps):
+    cv2.putText(frame, status_text, (5, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+    cv2.putText(frame, f"Inference Time: {yolo_latency:.2f} sec", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+
+def main():
+    config = load_env_variables()
+    write_api = initialize_influxdb(config['influxdb_url'], config['influxdb_token'], config['influxdb_org'])
+    model = YOLO("assets/YOLOv8m-pose.pt")
+    server_socket, client_socket, addr = setup_socket(config['host_ip'], config['port'])
+    print(f"Connection from: {addr}")
+
+    payload_size = struct.calcsize("!L")
+    data = b""
+    last_write_time = time.time()
+
+    try:
+        while True:
+            received_data, data = handle_incoming_data(client_socket, payload_size, data)
+            if not received_data:
+                break
+
+            start_time = time.time()
+
             c1_status = received_data['c1_status']
             c2_status = received_data['c2_status']
-            c1_frame = received_data['frame1']
-            c2_frame = received_data['frame2']
+            c1_frame = cv2.imdecode(received_data['frame1'], cv2.IMREAD_COLOR)
+            c2_frame = cv2.imdecode(received_data['frame2'], cv2.IMREAD_COLOR)
+
             c1_fsr_values = received_data['c1_fsr']
             c2_fsr_values = received_data['c2_fsr']
 
-            c1_frame = cv2.imdecode(c1_frame, cv2.IMREAD_COLOR)
+            # Process both frames
+            c1_frame, c1_people_count, c1_yolo_latency = process_single_frame(c1_frame, model)
+            c2_frame, c2_people_count, c2_yolo_latency = process_single_frame(c2_frame, model)
 
-            # Display frame with ROI and status
-            cv2.rectangle(c1_frame, (roi_x1, roi_y1), (roi_x2, roi_y2), generate_color(5), 2)
-            cv2.putText(c1_frame, f"C1-{c1_status}", (5, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, generate_color(5), 2)
-            
-            # Predict using YOLOv8 model
-            results = model(c1_frame, show=False, stream=True, verbose=False)
+            # Calculate frame processing time and FPS
+            frame_time = time.time() - start_time
+            fps = 1 / frame_time if frame_time > 0 else 0
 
-            # Initialize counters
-            c1_people_count = 0
-            leaving_person_count = 0
+            # Add status and inference time to both frames
+            annotate_frame(c1_frame, f"C1-{c1_status}", c1_yolo_latency, fps)
+            annotate_frame(c2_frame, f"C2-{c2_status}", c2_yolo_latency, fps)
 
-            for r in results:
-                boxes = r.boxes
-                keypoints_data = r.keypoints.data
-                
-                for i, box in enumerate(boxes):
-                    # Bounding box coordinates
-                    x1, y1, x2, y2 = map(int, box.xyxy[0])  # Convert to integer
-
-                    # Confidence and class name
-                    confidence = math.ceil((box.conf[0] * 100)) / 100
-                    cls = int(box.cls[0])
-                    
-                    # Only process the "person" class
-                    if classNames[cls] == "person":
-                        c1_people_count += 1
-
-                        # Extract keypoints for pose detection
-                        keypoints = keypoints_data[i]  # Get keypoints for this person
-                        if keypoints.shape[0] > 0:
-                            # Calculate angle between head (11), hips (13), and knees (15)
-                            angle = calculate_angle(keypoints[11][:2], keypoints[13][:2], keypoints[15][:2])
-
-                            # Classify as sitting or standing
-                            status = 'Sitting' if angle is not None and angle < 110 else 'Standing'
-
-                            # Generate the bounding box color only once
-                            color = (0, 255, 0) if status == 'Sitting' else (0, 0, 255)
-
-                            # Draw bounding box and status text
-                            cv2.rectangle(c1_frame, (x1, y1), (x2, y2), color, 2)
-                            cv2.putText(c1_frame, f"{status}", (x1, y2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-
-                        # Calculate the bounding box and overlap areas
-                        bbox_area = (x2 - x1) * (y2 - y1)
-                        overlap_area = calculate_overlap_area(x1, y1, x2, y2, roi_x1, roi_y1, roi_x2, roi_y2)
-
-                        # Check if more than half of the bounding box overlaps with the ROI
-                        if overlap_area > 0.5 * bbox_area:
-                            leaving_person_count += 1
-
-                        # Draw object info text (class + confidence) once
-                        object_info = f"{classNames[cls]} {confidence}"
-                        cv2.putText(c1_frame, object_info, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
-
-            # Write sensor and people count data every second
             current_time = time.time()
-            if current_time - last_write_time >= 1:
-                sensor_point = (Point("sensor_data")
-                                .field("fsr1", c1_fsr_values[0])
-                                .field("fsr2", c1_fsr_values[1])
-                                .field("fsr3", c2_fsr_values[0])
-                                .field("fsr4", c2_fsr_values[1])
-                                .field("c1_person", c1_people_count)
-                                .field("c2_person", c1_people_count))
-                write_api.write(bucket=influxdb_bucket, org=influxdb_org, record=sensor_point)
-                last_write_time = current_time
-                print(f"Server: C1-{c1_status} [{c1_fsr_values[0]}, {c1_fsr_values[1]}] person: {c1_people_count}, C2-{c2_status} [{c2_fsr_values[0]}, {c2_fsr_values[1]}], person: {c1_people_count}")
-                print(f"Leaving person: {leaving_person_count}")
+            last_write_time = write_to_influx(
+                write_api,
+                config['influxdb_bucket'],
+                config['influxdb_org'],
+                c1_fsr_values,
+                c2_fsr_values,
+                c1_status,
+                c2_status,
+                c1_people_count,
+                c2_people_count,
+                last_write_time,
+                current_time
+            )
 
-        except Exception as e:
-            print(f"Server: Deserialization error: {e}")
-            break
+            # Display both frames
+            cv2.imshow('C1 Video Stream with Prediction', c1_frame)
+            cv2.imshow('C2 Video Stream with Prediction', c2_frame)
 
-        cv2.imshow('Video Stream with Prediction', c1_frame)
-        
-        # Exit on 'q' key press
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            print("Server: Exiting on user command.")
-            break
+            if cv2.waitKey(10) & 0xFF == ord('q'):
+                break
 
-except KeyboardInterrupt:
-    print("Server: Program interrupted by user.")
+    finally:
+        client_socket.close()
+        server_socket.close()
+        cv2.destroyAllWindows()
 
-finally:
-    # Cleanup resources
-    client_socket.close()
-    server_socket.close()
-    cv2.destroyAllWindows()
-    print("Server: Sockets closed, resources released.")
+if __name__ == "__main__":
+    main()

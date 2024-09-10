@@ -1,5 +1,6 @@
 python-dotenv
 opencv-python
 spidev
+ultralytics
 safetensors
 influxdb-client
