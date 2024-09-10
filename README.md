@@ -4,12 +4,12 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 ### To-Do List
 
-| Task                                      | Status            |
-| ----------------------------------------- | ----------------- |
-| Revamp dashboard                          | 🔨WIP             |
-| Option to trasmit sample cabin footage    | 🔨WIP             |
-| Demo Scene Setup                          | ❌ Not started    |
-| Security measure for socket communication | ❌ Not needed yet |
+| Task                                      | Status                 |
+| ----------------------------------------- | ---------------------- |
+| Revamp dashboard                          | Done✅, Pending review |
+| Option to trasmit sample cabin footage    | 🔨WIP                  |
+| Demo Scene Setup                          | ❌ Not started         |
+| Security measure for socket communication | ❌ Not needed yet      |
 
 ### Server Setup - Central Processing (PC)
 
@@ -21,71 +21,34 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
    cd 'C:\Program Files\InfluxData' && ./influxd
    ```
 
-3. Grant network access, InfluxDB UI can be viewed at `http://localhost:8086`
+3. Grant network access, `InfluxDB UI` can be viewed at `http://localhost:8086`
 
-4. In the UI, setup user account to obtain `All Access API Token`, copy the token
+4. In `InfluxDB UI`, setup user account with org `NextGen Hackathon` to obtain `All Access API Token`, save the token
 
-5. Install [Influx CLI](https://docs.influxdata.com/influxdb/cloud/tools/influx-cli/?t=Windows) and extract the zip to `C:\Program Files\Influx-CLI\`, rename and move all files to parent folder
+5. Under `Dashboard`, `Create Dashboard > Add a Template`, paste URL: `https://raw.githubusercontent.com/Vincexodus/Train-Density-Monitor-RTS/main/assets/raspberry-pi-system.json`
 
-6. Open new terminal, create an `influx` cli config and set it active, then apply the Raspberry Pi template
+6. Clone the repo and navigate to root directory
 
    ```bash
-   cd 'C:\Program Files\Influx-CLI'
-   .\influx config create -a -n main_config -u http://localhost:8086/ -t <ALL_ACCESS_API_TOKEN> -o "NextGen Hackathon"
-   .\influx apply -u https://raw.githubusercontent.com/influxdata/community-templates/master/raspberry-pi/raspberry-pi-system.yml
+   git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
    ```
-7. Dashboard can be viewed under `Dashboard > Raspberry Pi System` once telegraf from Raspberry Pi run successfully
 
-8. Download [Grafana installer](https://grafana.com/grafana/download?platform=windows)
+7. Duplicate `.env.example`, rename duplicated file to `.env.local` and replace the values accordingly
 
-9. Start grafana by running `grafana-server.exe` in `bin` directory
+8. Create virtual python environment and activate it
 
-10. Open browser with address `http://localhost:3000/`, login with `admin` `admin`
+   ```bash
+   virtualenv venv
+   venv\Scripts\activate
+   ```
 
-11. Under `Home > Connections > Data sources`, add influxDB as data source
+9. Download necessary python modules
 
-12. influxDB data source config:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-    | Param          | Value                    |
-    | -------------- | ------------------------ |
-    | Query Language | `Flux`                   |
-    | URL            | `http://localhost:8086`  |
-    | Organization   | `NextGen Hackathon`      |
-    | Token          | `<ALL_ACCESS_API_TOKEN>` |
-
-13. Under `Home > Dashboards`, add visualization for new dashboard
-
-14. Paste code example (written in Flux) to display FSR sensor readings for past 3 hours
-
-    ```bash
-     from(bucket: "Main")
-       |> range(start: -3h)
-       |> filter(fn: (r) => r._measurement == "sensor_data")
-       |> filter(fn: (r) => r._field == "fsr1" or r._field == "fsr2" or r._field == "fsr3")
-    ```
-
-15. Clone the repo
-
-    ```bash
-    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
-    ```
-
-16. Duplicate `.env.example`, rename duplicated file to `.env.local` and replace the values accordingly
-
-17. Create virtual python environment and activate it
-
-    ```bash
-    virtualenv venv
-    venv\Scripts\activate
-    ```
-
-18. Download necessary python modules
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-19. Run server script
+10. Run server script
 
     ```bash
     py pc_server.py
@@ -111,7 +74,7 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 3. Start Telegraf, command can be found `InfluxDB UI > Load Data > Telegraf > Setup Instructions`
 
    ```bash
-    telegraf --config http://192.168.0.190:8086/api/v2/telegrafs/0da1f37571242000
+    telegraf --config http://<PC-IP-ADDRESS>:8086/api/v2/telegrafs/...
    ```
 
 4. Clone the repo and install python modules

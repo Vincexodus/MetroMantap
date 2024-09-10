@@ -6,6 +6,7 @@ import struct
 import pickle
 import numpy as np
 import cv2
+import speedtest
 from dotenv import load_dotenv
 from ultralytics import YOLO
 from influxdb_client import InfluxDBClient, Point
@@ -26,6 +27,14 @@ def calculate_angle(a, b, c):
         angle = 360 - angle
 
     return angle
+
+def run_speedtest():
+    st = speedtest.Speedtest()
+    st.get_best_server()
+    download_speed = st.download() / 1_000_000  # Convert from bits/s to Mbits/s
+    upload_speed = st.upload() / 1_000_000  # Convert from bits/s to Mbits/s
+    ping = st.results.ping
+    return download_speed, upload_speed, ping
 
 # Load environment variables
 def load_env_variables():
@@ -80,9 +89,9 @@ def handle_incoming_data(client_socket, payload_size, data):
 
     return pickle.loads(serialized_data), data
 
-def process_frame(c1_frame, results):
-    c1_people_count = 0
-    leaving_person_count = 0
+def process_frame(c1_frame, train_status, results):
+    people_count = 0
+    standing_passengers_count = 0
 
     for r in results:
         boxes = r.boxes
@@ -94,23 +103,32 @@ def process_frame(c1_frame, results):
             cls = int(box.cls[0])
 
             if classNames[cls] == "person":
-                c1_people_count += 1
+                people_count += 1
                 keypoints = keypoints_data[i]
                 if keypoints.shape[0] > 0:
                     angle = calculate_angle(keypoints[11][:2], keypoints[13][:2], keypoints[15][:2])
                     status = 'Sitting' if angle is not None and angle < 110 else 'Standing'
                     color = (0, 255, 0) if status == 'Sitting' else (0, 0, 255)
-                    cv2.rectangle(c1_frame, (x1, y1), (x2, y2), color, 2)
-                    cv2.putText(c1_frame, f"{status}", (x1, y2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                    
+                    if status == 'Standing':
+                        standing_passengers_count += 1
+
+                    cv2.rectangle(c1_frame, (x1, y1), (x2, y2), color, 1)
+                    cv2.putText(c1_frame, f"{status}", (x1, y2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
 
                 object_info = f"{classNames[cls]} {confidence}"
-                cv2.putText(c1_frame, object_info, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                cv2.putText(c1_frame, object_info, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
 
-    return c1_frame, c1_people_count, leaving_person_count
+    # assume passengers leaving if stand up when train slowing down
+    if train_status == 'slowing_down':
+        people_count -= standing_passengers_count
 
-def write_to_influx(write_api, bucket, org, c1_fsr_values, c2_fsr_values, c1_status, c2_status, c1_people_count, c2_people_count, last_write_time, current_time):
+    return c1_frame, people_count
+
+def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_fsr_values, c1_status, c2_status, c1_people_count, c2_people_count, download_speed, upload_speed, ping, last_write_time, current_time):
     if current_time - last_write_time >= 1:
         sensor_point = (Point("sensor_data")
+                        .field("one_way_latency", one_way_latency)
                         .field("fsr1", c1_fsr_values[0])
                         .field("fsr2", c1_fsr_values[1])
                         .field("fsr3", c2_fsr_values[0])
@@ -118,24 +136,30 @@ def write_to_influx(write_api, bucket, org, c1_fsr_values, c2_fsr_values, c1_sta
                         .field("c1_status", c1_status)
                         .field("c2_status", c2_status)
                         .field("c1_person", c1_people_count)
-                        .field("c2_person", c1_people_count))
+                        .field("c2_person", c2_people_count)
+                        .field("download_speed", download_speed)
+                        .field("upload_speed", upload_speed)
+                        .field("ping", ping))
         write_api.write(bucket=bucket, org=org, record=sensor_point)
         last_write_time = current_time
     return last_write_time
 
-def process_single_frame(frame, model):
-    start_inference_time = time.time()
+def process_single_frame(frame, train_status, model):
+    start_inference_time = time.perf_counter()
     results = model(frame, show=False, stream=True, verbose=False)
-    yolo_latency = time.time() - start_inference_time
-
-    frame, people_count, leaving_person_count = process_frame(frame, results)
+    yolo_latency = time.perf_counter() - start_inference_time
+    frame, people_count = process_frame(frame, train_status, results)
 
     return frame, people_count, yolo_latency
 
-def annotate_frame(frame, status_text, yolo_latency, fps):
+def annotate_frame(frame, status_text, one_way_latency, yolo_latency, fps):
+    # Convert yolo_latency from seconds to milliseconds
+    yolo_latency_ms = yolo_latency * 1000
+    
     cv2.putText(frame, status_text, (5, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
-    cv2.putText(frame, f"Inference Time: {yolo_latency:.2f} sec", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
-    cv2.putText(frame, f"FPS: {fps:.2f}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+    cv2.putText(frame, f"Input Latency: {one_way_latency:.4f} s", (5, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+    cv2.putText(frame, f"YOLO Inference Time: {yolo_latency_ms:.4f} ms", (5, 45), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
+    cv2.putText(frame, f"FPS: {fps:.2f}", (5, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
 
 def main():
     config = load_env_variables()
@@ -147,6 +171,8 @@ def main():
     payload_size = struct.calcsize("!L")
     data = b""
     last_write_time = time.time()
+    last_speedtest_time = time.time()
+    speedtest_interval = 60  # Interval to run speed test (in seconds)
 
     try:
         while True:
@@ -155,7 +181,9 @@ def main():
                 break
 
             start_time = time.time()
+            receive_time = time.time()
 
+            send_time = received_data['send_timestamp']
             c1_status = received_data['c1_status']
             c2_status = received_data['c2_status']
             c1_frame = cv2.imdecode(received_data['frame1'], cv2.IMREAD_COLOR)
@@ -164,29 +192,43 @@ def main():
             c1_fsr_values = received_data['c1_fsr']
             c2_fsr_values = received_data['c2_fsr']
 
+            # Capture reception time
+            one_way_latency = (receive_time - send_time) / 2
+
             # Process both frames
-            c1_frame, c1_people_count, c1_yolo_latency = process_single_frame(c1_frame, model)
-            c2_frame, c2_people_count, c2_yolo_latency = process_single_frame(c2_frame, model)
+            c1_frame, c1_people_count, c1_yolo_latency = process_single_frame(c1_frame, c1_status, model)
+            c2_frame, c2_people_count, c2_yolo_latency = process_single_frame(c2_frame, c2_status, model)
 
             # Calculate frame processing time and FPS
             frame_time = time.time() - start_time
             fps = 1 / frame_time if frame_time > 0 else 0
 
             # Add status and inference time to both frames
-            annotate_frame(c1_frame, f"C1-{c1_status}", c1_yolo_latency, fps)
-            annotate_frame(c2_frame, f"C2-{c2_status}", c2_yolo_latency, fps)
+            annotate_frame(c1_frame, f"C1-{c1_status}", one_way_latency, c1_yolo_latency, fps)
+            annotate_frame(c2_frame, f"C2-{c2_status}", one_way_latency, c2_yolo_latency, fps)
 
+            # Run speed test periodically
             current_time = time.time()
+            if current_time - last_speedtest_time >= speedtest_interval:
+                download_speed, upload_speed, ping = run_speedtest()
+                last_speedtest_time = current_time
+            else:
+                download_speed = upload_speed = ping = None
+
             last_write_time = write_to_influx(
                 write_api,
                 config['influxdb_bucket'],
                 config['influxdb_org'],
+                one_way_latency,
                 c1_fsr_values,
                 c2_fsr_values,
                 c1_status,
                 c2_status,
                 c1_people_count,
                 c2_people_count,
+                download_speed,
+                upload_speed,
+                ping,
                 last_write_time,
                 current_time
             )
