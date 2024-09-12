@@ -6,8 +6,9 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 | Task                                      | Status                 |
 | ----------------------------------------- | ---------------------- |
-| Revamp dashboard                          | Done✅, Pending review |
-| Option to trasmit sample cabin footage    | 🔨WIP                  |
+| Posture detection enhancement             | 🔨WIP                  |
+| Fix footage unable to quit                | 🔨WIP                  |
+| Fix lagging footage, increase fps         | 🔨WIP                  |
 | Demo Scene Setup                          | ❌ Not started         |
 | Security measure for socket communication | ❌ Not needed yet      |
 
@@ -25,15 +26,15 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 4. In `InfluxDB UI`, setup user account with org `NextGen Hackathon` to obtain `All Access API Token`, save the token
 
-5. Under `Dashboard`, `Create Dashboard > Add a Template`, paste URL: `https://raw.githubusercontent.com/Vincexodus/Train-Density-Monitor-RTS/main/assets/raspberry-pi-system.json`
+5. Under `Dashboard`, `Create Dashboard > Add a Template`, paste this [URL](https://raw.githubusercontent.com/Vincexodus/Train-Density-Monitor-RTS/main/assets/raspberry_pi_system.json)
 
-6. Clone the repo and navigate to root directory
+6. Open new terminal, clone the repo and navigate to root directory
 
    ```bash
    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
    ```
 
-7. Duplicate `.env.example`, rename duplicated file to `.env.local` and replace the values accordingly
+7. Duplicate `.env.example` and rename the duplicated file to `.env.local`, replace the values accordingly
 
 8. Create virtual python environment and activate it
 
@@ -42,7 +43,7 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
    venv\Scripts\activate
    ```
 
-9. Download necessary python modules
+9. Download required python modules
 
    ```bash
    pip install -r requirements.txt
@@ -77,7 +78,7 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
     telegraf --config http://<PC-IP-ADDRESS>:8086/api/v2/telegrafs/...
    ```
 
-4. Clone the repo and install python modules
+4. Open new terminal, clone the repo and install python modules
 
    ```bash
    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
@@ -92,8 +93,9 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 6. Navigate to Interfacing Options > SPI > Enable.
 
-7. Run client script`raspberry_client.py` in Thonny IDE
+7. Run client script `raspberry_client.py` in Thonny IDE
 
 ### References
 
+- [How to Setup a Raspberry Pi Pressure Pad (FSR)](https://pimylifeup.com/raspberry-pi-pressure-pad/)
 - [Monitoring Your Raspberry Pi System using InfluxDB Telegraf](https://randomnerdtutorials.com/monitor-raspberry-pi-influxdb-telegraf/)
