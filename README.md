@@ -7,9 +7,7 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 | Task                                      | Status                 |
 | ----------------------------------------- | ---------------------- |
 | Posture detection enhancement             | 🔨WIP                  |
-| Fix footage unable to quit                | 🔨WIP                  |
-| Fix lagging footage, increase fps         | 🔨WIP                  |
-| Demo Scene Setup                          | ❌ Not started         |
+| Figure out syncing processed frame with client         | 🔨WIP                  |
 | Security measure for socket communication | ❌ Not needed yet      |
 
 ### Server Setup - Central Processing (PC)
@@ -26,7 +24,7 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 4. In `InfluxDB UI`, setup user account with org `NextGen Hackathon` to obtain `All Access API Token`, save the token
 
-5. Under `Dashboard`, `Create Dashboard > Add a Template`, paste this [URL](https://raw.githubusercontent.com/Vincexodus/Train-Density-Monitor-RTS/main/assets/raspberry_pi_system.json)
+5. Under `Dashboard`, `Create Dashboard > Add a Template`, paste this [URL](https://raw.githubusercontent.com/Vincexodus/Train-Density-Monitor-RTS/main/assets/train_density_monitor_dashboard.json)
 
 6. Open new terminal, clone the repo and navigate to root directory
 

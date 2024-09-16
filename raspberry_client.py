@@ -26,10 +26,25 @@ server_port = 9999  # Port to connect to
 client_socket.connect((server_ip, server_port))
 print(f"Client: Connected to server at {server_ip}:{server_port}")
 
-# Initialize the webcam
-cap = cv2.VideoCapture(0)
-desired_fps = 15  # Set a reasonable frame rate
+stream_from_webcam = False
+video1_path = "assets/train_cabin (1).mp4"
+video2_path = "assets/train_cabin (3).mp4"
+
+# Initialize the video source (webcam or file)
+if stream_from_webcam:
+    cap = cv2.VideoCapture(0)
+    cap2 = cv2.VideoCapture(0)
+else:
+    cap = cv2.VideoCapture(video1_path)
+    cap2 = cv2.VideoCapture(video2_path)
+
+if not cap.isOpened() or not cap2.isOpened():
+    print("Error: Could not open one or both video sources.")
+    exit()
+
+desired_fps = 30  # Set a reasonable frame rate
 cap.set(cv2.CAP_PROP_FPS, desired_fps)
+cap2.set(cv2.CAP_PROP_FPS, desired_fps)
 
 # Compression parameters
 encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]  # Quality scale (0-100)
@@ -54,11 +69,21 @@ cv2.namedWindow("ControlWindow", cv2.WINDOW_NORMAL)
 
 try:
     while True:
-        # Capture first video frame
+        # Capture first video frame from both sources
         ret1, frame1 = cap.read()
-        if not ret1:
-            print("Client: Error: Could not read first frame.")
-            break
+        ret2, frame2 = cap2.read()
+
+        if not stream_from_webcam: # enable looping for sample footage             
+            if not ret1:
+                cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                ret1, frame1 = cap.read()
+            if not ret2:
+                cap2.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                ret2, frame2 = cap.read()
+        else:
+            if not ret1 or not ret2:
+                print("Client: Error: Could not read one or both frames.")
+                break
 
         # Check for keyboard input to update cabin statuses
         key = cv2.waitKey(1) & 0xFF
@@ -73,20 +98,24 @@ try:
         fsr1_value = read_adc(0)
         fsr2_value = read_adc(1)
         fsr3_value = read_adc(2)
+        fsr4_value = read_adc(3)
         c1_fsr_values = [fsr1_value, fsr2_value]
-        c2_fsr_values = [fsr3_value, 0]
+        c2_fsr_values = [fsr3_value, fsr4_value]
 
-        # Compress the frame using JPEG
+        # Compress the frames using JPEG
         result1, encoded_img1 = cv2.imencode('.jpg', frame1, encode_param)
+        result2, encoded_img2 = cv2.imencode('.jpg', frame2, encode_param)
 
-        # Combine FSR data, train statuses, and encoded frames
+        send_timestamp = time.time()
+        
         data = {
+            'send_timestamp': send_timestamp,
             'c1_fsr': c1_fsr_values,
             'c2_fsr': c2_fsr_values,
             'c1_status': c1_status,
             'c2_status': c2_status,
             'frame1': encoded_img1,
-            'frame2': encoded_img1,  # Use the same frame for now
+            'frame2': encoded_img2,  # Use the second frame from cap2
         }
 
         # Serialize the combined data
@@ -98,15 +127,17 @@ try:
         client_socket.sendall(message)
 
         print(f"Client: C1 Status: {c1_status}, FSR Values: {c1_fsr_values}, C2 Status: {c2_status}, FSR Values: {c2_fsr_values}")
-        # Optional: Delay to control the rate of sending data
-        time.sleep(0.5)
+        
+        # time.sleep(1)
 
 except Exception as e:
     print(f"Client: An error occurred: {e}")
 
 finally:
     cap.release()
+    cap2.release()
     client_socket.close()
     spi.close()
     cv2.destroyWindow("ControlWindow")
     print("Client: Camera released, socket closed, SPI connection closed.")
+
