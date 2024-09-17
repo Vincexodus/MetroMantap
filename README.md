@@ -1,14 +1,20 @@
 # Train Density Monitor - Real Time System (RTS)
 
-Real-Time Crowd Management System for train stations using sensor technology, AI-driven analytics, and real-time data processing to improve passenger flow, reduce congestion, and optimize train operations and scheduling
+<h1 align="center" style="display: flex; justify-content: center; align-items: center;">
+  <img src="/assets/footage_small.gif" style="width:100%;"/>
+  <img src="/assets/dashboard_small.gif" style="width:57.5%;"/>
+</h1>
 
-### To-Do List
+<p align="center">
+  <i align="center">Real-Time Crowd Management System for train stations using sensor technology, AI-driven analytics, and real-time data processing to improve passenger flow, reduce congestion, and optimize train operations and scheduling</i>
+</p>
+
+<!-- ### To-Do List
 
 | Task                                      | Status                 |
 | ----------------------------------------- | ---------------------- |
-| Posture detection enhancement             | 🔨Pending Review                  |
 | Batch Size Prediction, Async I/O, Vetorize function, Threading, Stream Buffer | ✨ Enhancements                  |
-| Security measure for socket communication | ❌ Not needed yet      |
+| Security measure for socket communication | ❌ Not needed yet      | -->
 
 ### Server Setup - Central Processing (PC)
 
