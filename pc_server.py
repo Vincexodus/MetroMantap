@@ -13,7 +13,6 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from object_classes import classNames
 
-# Calculate the angle between three keypoints
 def calculate_posture_angle(a, b, c):
     a = np.array(a)
     b = np.array(b)
@@ -130,13 +129,12 @@ def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_f
         last_write_time = current_time
     return last_write_time
 
-def process_single_frame(frame, train_status, model):
+def process_single_frame(frame, model):
     start_inference_time = time.perf_counter()
     
     results = model(frame, show=False, stream=True, verbose=False)
 
     people_count = 0
-    standing_passengers_count = 0
     frame_height = frame.shape[0]  # Get the frame height to compare head position
 
     for r in results:
@@ -155,18 +153,13 @@ def process_single_frame(frame, train_status, model):
                 people_count += 1
                 keypoints = keypoints_data[i].cpu().numpy()  # Move keypoints tensor to CPU
 
-                face_direction = detect_face_direction(keypoints)
-                cv2.putText(frame, face_direction, (x1, y2 - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
-
                 if keypoints.shape[0] > 0:
                     # Calculate angle between keypoints
                     angle = calculate_posture_angle(keypoints[11][:2], keypoints[13][:2], keypoints[15][:2])
 
                     head_y = keypoints[0][1]  # y-coordinate of the head keypoint
                     if angle > 130 and head_y < frame_height / 2:
-                      
                         color = (0, 0, 255)
-                        standing_passengers_count += 1
                         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 1)
                         cv2.putText(frame, "Standing", (x1, y2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
 
@@ -229,8 +222,8 @@ def main():
             one_way_latency = (receive_time - send_time) / 2
 
             # Process both frames
-            c1_frame, c1_people_count, c1_yolo_latency = process_single_frame(c1_frame, c1_status, model)
-            c2_frame, c2_people_count, c2_yolo_latency = process_single_frame(c2_frame, c2_status, model)
+            c1_frame, c1_people_count, c1_yolo_latency = process_single_frame(c1_frame, model)
+            c2_frame, c2_people_count, c2_yolo_latency = process_single_frame(c2_frame, model)
 
             # Calculate frame processing time and FPS
             frame_time = time.time() - start_time

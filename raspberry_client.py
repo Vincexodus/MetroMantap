@@ -27,13 +27,13 @@ client_socket.connect((server_ip, server_port))
 print(f"Client: Connected to server at {server_ip}:{server_port}")
 
 stream_from_webcam = False
-video1_path = "assets/train_cabin (1).mp4"
-video2_path = "assets/train_cabin (3).mp4"
+video1_path = "assets/train_cabin (2).mp4"
+video2_path = "assets/train_cabin (5).mp4"
 
 # Initialize the video source (webcam or file)
 if stream_from_webcam:
     cap = cv2.VideoCapture(0)
-    cap2 = cv2.VideoCapture(0)
+    cap2 = cap
 else:
     cap = cv2.VideoCapture(video1_path)
     cap2 = cv2.VideoCapture(video2_path)
