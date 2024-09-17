@@ -1,12 +1,12 @@
 import os
 import time
-import math
 import socket
 import struct
 import pickle
 import numpy as np
 import cv2
 import speedtest
+import torch
 from dotenv import load_dotenv
 from ultralytics import YOLO
 from influxdb_client import InfluxDBClient, Point
@@ -14,7 +14,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 from object_classes import classNames
 
 # Calculate the angle between three keypoints
-def calculate_angle(a, b, c):
+def calculate_posture_angle(a, b, c):
     a = np.array(a)
     b = np.array(b)
     c = np.array(c)
@@ -27,6 +27,28 @@ def calculate_angle(a, b, c):
         angle = 360 - angle
 
     return angle
+
+def detect_face_direction(keypoints):
+    if len(keypoints) < 5:
+        return "Unknown"
+
+    nose_x, nose_y = keypoints[0][:2]
+    left_eye_x, left_eye_y = keypoints[1][:2]
+    right_eye_x, right_eye_y = keypoints[2][:2]
+    left_ear_x, left_ear_y = keypoints[3][:2]
+    right_ear_x, right_ear_y = keypoints[4][:2]
+
+    # Calculate horizontal face direction
+    if nose_x < left_eye_x and nose_x < left_ear_x:
+        return "Left"
+    elif nose_x > right_eye_x and nose_x > right_ear_x:
+        return "Right"
+    
+    # Calculate vertical face direction
+    if nose_y < min(left_eye_y, right_eye_y):
+        return "Up"
+    elif nose_y > max(left_eye_y, right_eye_y):
+        return "Down"
 
 def run_speedtest():
     st = speedtest.Speedtest()
@@ -110,10 +132,12 @@ def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_f
 
 def process_single_frame(frame, train_status, model):
     start_inference_time = time.perf_counter()
+    
     results = model(frame, show=False, stream=True, verbose=False)
 
     people_count = 0
     standing_passengers_count = 0
+    frame_height = frame.shape[0]  # Get the frame height to compare head position
 
     for r in results:
         boxes = r.boxes
@@ -121,38 +145,35 @@ def process_single_frame(frame, train_status, model):
 
         for i, box in enumerate(boxes):
             confidence = box.conf[0]
-            if confidence < 0.5: # ignore low confidence
+            if confidence < 0.4:  # ignore low confidence
                 continue
 
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            x1, y1, x2, y2 = map(int, box.xyxy[0].cpu().numpy())
             cls = int(box.cls[0])
 
             if classNames[cls] == "person":
                 people_count += 1
-                keypoints = keypoints_data[i]
-                if keypoints.shape[0] > 0:
-                    angle = calculate_angle(keypoints[11][:2], keypoints[13][:2], keypoints[15][:2])
-                    status = 'Sitting' if angle is not None and angle < 110 else 'Standing'
-                    color = (0, 255, 0) if status == 'Sitting' else (0, 0, 255)
+                keypoints = keypoints_data[i].cpu().numpy()  # Move keypoints tensor to CPU
 
-                    if status == 'Standing':
+                face_direction = detect_face_direction(keypoints)
+                cv2.putText(frame, face_direction, (x1, y2 - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1)
+
+                if keypoints.shape[0] > 0:
+                    # Calculate angle between keypoints
+                    angle = calculate_posture_angle(keypoints[11][:2], keypoints[13][:2], keypoints[15][:2])
+
+                    head_y = keypoints[0][1]  # y-coordinate of the head keypoint
+                    if angle > 130 and head_y < frame_height / 2:
+                      
+                        color = (0, 0, 255)
                         standing_passengers_count += 1
-                        # Adjust bounding box and text positions for resized frame
-                        x1, y1 = int(x1 / 0.5), int(y1 / 0.5)
-                        x2, y2 = int(x2 / 0.5), int(y2 / 0.5)
                         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 1)
-                        cv2.putText(frame, f"{status}", (x1, y2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+                        cv2.putText(frame, "Standing", (x1, y2 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
 
                         object_info = f"{classNames[cls]} {confidence:.2f}"
                         cv2.putText(frame, object_info, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
-    
-    yolo_latency = time.perf_counter() - start_inference_time
-    # assume passengers leaving if stand up when train slowing down
-    if train_status == 'slowing_down':
-        people_count -= standing_passengers_count
 
-    return frame, people_count, yolo_latency
-
+    return frame, people_count, time.perf_counter() - start_inference_time
 
 def annotate_frame(index, frame, status, people_count, one_way_latency, yolo_latency, fps):
     cv2.putText(frame, f"C{index+1}:{status}", (5, 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
@@ -162,9 +183,14 @@ def annotate_frame(index, frame, status, people_count, one_way_latency, yolo_lat
     cv2.putText(frame, f"FPS: {fps:.2f}", (5, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
 
 def main():
+    # Use GPU for prediction
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = YOLO("assets/YOLOv8n-pose.pt")
+    model = model.to(device)
+
     config = load_env_variables()
     write_api = initialize_influxdb(config['influxdb_url'], config['influxdb_token'], config['influxdb_org'])
-    model = YOLO("assets/YOLOv8n-pose.pt")
+    
     server_socket, client_socket, addr = setup_socket(config['host_ip'], config['port'])
     print(f"Connection from: {addr}")
 
@@ -172,7 +198,7 @@ def main():
     data = b""
     last_write_time = time.time()
     last_speedtest_time = time.time()
-    speedtest_interval = 60  # Interval to run speed test (in seconds)
+    speedtest_interval = 60  # Interval to run speed test
 
     try:
         while True:
@@ -188,6 +214,13 @@ def main():
             c2_status = received_data['c2_status']
             c1_frame = cv2.imdecode(received_data['frame1'], cv2.IMREAD_COLOR)
             c2_frame = cv2.imdecode(received_data['frame2'], cv2.IMREAD_COLOR)
+
+            # Resize to half of the original size
+            original_height_c1, original_width_c1 = c1_frame.shape[:2]
+            original_height_c2, original_width_c2 = c2_frame.shape[:2]
+
+            c1_frame = cv2.resize(c1_frame, (original_width_c1 // 2, original_height_c1 // 2))
+            c2_frame = cv2.resize(c2_frame, (original_width_c2 // 2, original_height_c2 // 2))
 
             c1_fsr_values = received_data['c1_fsr']
             c2_fsr_values = received_data['c2_fsr']
@@ -206,6 +239,10 @@ def main():
             # Add status and inference time to both frames
             annotate_frame(0, c1_frame, c1_status, c1_people_count, one_way_latency, c1_yolo_latency, fps)
             annotate_frame(1, c2_frame, c2_status, c2_people_count, one_way_latency, c2_yolo_latency, fps)
+
+            # Display both frames
+            cv2.imshow('Cabin 1 Video Stream with Prediction', c1_frame)
+            cv2.imshow('Cabin 2 Video Stream with Prediction', c2_frame)
 
             # Run speed test periodically
             current_time = time.time()
@@ -233,11 +270,7 @@ def main():
                 current_time
             )
 
-            # Display both frames
-            cv2.imshow('Cabin 1 Video Stream with Prediction', c1_frame)
-            cv2.imshow('Cabin 2 Video Stream with Prediction', c2_frame)
-
-            if cv2.waitKey(10) & 0xFF == ord('q'):
+            if cv2.waitKey(33) & 0xFF == ord('q'):
                 break
 
     finally:

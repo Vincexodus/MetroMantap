@@ -6,8 +6,8 @@ Real-Time Crowd Management System for train stations using sensor technology, AI
 
 | Task                                      | Status                 |
 | ----------------------------------------- | ---------------------- |
-| Posture detection enhancement             | 🔨WIP                  |
-| Figure out syncing processed frame with client         | 🔨WIP                  |
+| Posture detection enhancement             | 🔨Pending Review                  |
+| Batch Size Prediction, Async I/O, Vetorize function, Threading, Stream Buffer | ✨ Enhancements                  |
 | Security measure for socket communication | ❌ Not needed yet      |
 
 ### Server Setup - Central Processing (PC)
