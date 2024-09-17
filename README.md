@@ -1,8 +1,8 @@
 # Train Density Monitor - Real Time System (RTS)
 
-<h1 align="center" style="display: flex; justify-content: center; align-items: center;">
-  <img src="/assets/footage_small.gif" style="width:100%;"/>
-  <img src="/assets/dashboard_small.gif" style="width:57.5%;"/>
+<h1 align="center" style="justify-content: center; align-items: center;">
+  <img src="/assets/footage_small.gif" style="width:100%;;"/>
+  <img src="/assets/dashboard_small.gif" style="width:775px;"/>
 </h1>
 
 <p align="center">
