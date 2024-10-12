@@ -7,6 +7,7 @@ import numpy as np
 import cv2
 import speedtest
 import torch
+import ssl
 from dotenv import load_dotenv
 from ultralytics import YOLO
 from influxdb_client import InfluxDBClient, Point
@@ -74,13 +75,24 @@ def initialize_influxdb(influxdb_url, influxdb_token, influxdb_org):
     client = InfluxDBClient(url=influxdb_url, token=influxdb_token, org=influxdb_org)
     return client.write_api(write_options=SYNCHRONOUS)
 
-# Setup socket to receive input data
-def setup_socket(host_ip, port):
+def setup_ssl_socket(host_ip, port):
+    # Create SSL context
+    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    context.load_cert_chain(certfile="assets/ssl/server.crt", keyfile="assets/ssl/server.key")
+
+    # Create socket and wrap with SSL
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((host_ip, port))
-    server_socket.listen(5)
-    client_socket, addr = server_socket.accept()
-    return server_socket, client_socket, addr
+    secure_socket = context.wrap_socket(server_socket, server_side=True)
+
+    # Bind and listen
+    secure_socket.bind((host_ip, port))
+    secure_socket.listen(5)
+    print(f"Server listening on {host_ip}:{port}")
+
+    # Accept connection
+    client_socket, addr = secure_socket.accept()
+    print(f"Connection from {addr}")
+    return secure_socket, client_socket, addr
 
 def handle_incoming_data(client_socket, payload_size, data):
     while len(data) < payload_size:
@@ -184,7 +196,7 @@ def main():
     config = load_env_variables()
     write_api = initialize_influxdb(config['influxdb_url'], config['influxdb_token'], config['influxdb_org'])
     
-    server_socket, client_socket, addr = setup_socket(config['host_ip'], config['port'])
+    server_socket, client_socket, addr = setup_ssl_socket(config['host_ip'], config['port'])
     print(f"Connection from: {addr}")
 
     payload_size = struct.calcsize("!L")
