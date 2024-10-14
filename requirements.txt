@@ -1,4 +1,5 @@
 numpy
+requests
 opencv-python
 torch
 ultralytics

@@ -6,6 +6,8 @@ import struct
 import pickle
 import numpy as np
 import cv2
+import requests
+import pprint
 import torch
 import ssl
 from datetime import datetime
@@ -116,7 +118,8 @@ def handle_incoming_data(client_socket, payload_size, data):
 
     return pickle.loads(serialized_data), data
 
-def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_fsr_values, c1_status, c2_status, c1_people_count, c2_people_count, last_write_time, current_time):
+def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_fsr_values, c1_status, c2_status, c1_people_count, c2_people_count, last_write_time, current_time, last_get_time):
+    # Write sensor data every second
     if current_time - last_write_time >= 1:
         sensor_point = (Point("sensor_data")
                         .field("one_way_latency", one_way_latency)
@@ -130,7 +133,30 @@ def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_f
                         .field("c2_person", c2_people_count))
         write_api.write(bucket=bucket, org=org, record=sensor_point)
         last_write_time = current_time
-    return last_write_time
+
+    # Write ridership data every minute
+    if current_time - last_get_time >= 30:
+        try:
+            response = requests.get("https://api.data.gov.my/data-catalogue?id=ridership_headline")
+            if response.status_code == 200:
+                latest_ridership = response.json()[-1]
+                ridership_point = (Point("ridership_data")
+                        .field("date", latest_ridership.get('date'))
+                        .field("lrt_ampang", latest_ridership.get('rail_lrt_ampang'))
+                        .field("mrt_kajang", latest_ridership.get('rail_mrt_kajang'))
+                        .field("lrt_kelana_jaya", latest_ridership.get('rail_lrt_kj'))
+                        .field("monorail", latest_ridership.get('rail_monorail'))
+                        .field("mrt_putrajaya", latest_ridership.get('rail_mrt_pjy')))
+                write_api.write(bucket=bucket, org=org, record=ridership_point)
+            else:
+                print(f"GET request failed with status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error during GET request: {e}")
+
+        # Update the last_get_time to the current time
+        last_get_time = current_time
+
+    return last_write_time, last_get_time
 
 def process_single_frame(frame, model):
     start_inference_time = time.perf_counter()
@@ -192,7 +218,7 @@ def receive_frames(client_socket, payload_size, frame_queue):
             current_time = datetime.fromtimestamp(time.time())
             print(f"{current_time}: Frame queue is full. Dropping frame.")
 
-def process_frames(frame_queue, model, write_api, config, last_write_time, skip_interval=5):
+def process_frames(frame_queue, model, write_api, config, last_write_time, last_get_time, skip_interval=5):
     frame_counter = 0  # Initialize a counter
 
     while True:
@@ -244,11 +270,10 @@ def process_frames(frame_queue, model, write_api, config, last_write_time, skip_
         cv2.imshow('Cabin 1 Video Stream with Prediction', c1_frame)
         cv2.imshow('Cabin 2 Video Stream with Prediction', c2_frame)
 
-        # Perform speed test periodically
         current_time = time.time()
 
         # Write data to InfluxDB
-        last_write_time = write_to_influx(
+        last_write_time, last_get_time = write_to_influx(
             write_api,
             config['influxdb_bucket'],
             config['influxdb_org'],
@@ -260,7 +285,8 @@ def process_frames(frame_queue, model, write_api, config, last_write_time, skip_
             c1_people_count,
             c2_people_count,
             last_write_time,
-            current_time
+            current_time,
+            last_get_time
         )
 
         if cv2.waitKey(33) & 0xFF == ord('q'):
@@ -278,11 +304,12 @@ def main():
 
     payload_size = struct.calcsize("!L")
     last_write_time = time.time()
+    last_get_time = time.time()
 
     frame_queue = queue.Queue(maxsize=20)
 
     receive_thread = threading.Thread(target=receive_frames, args=(client_socket, payload_size, frame_queue))
-    process_thread = threading.Thread(target=process_frames, args=(frame_queue, model, write_api, config, last_write_time))
+    process_thread = threading.Thread(target=process_frames, args=(frame_queue, model, write_api, config, last_write_time, last_get_time))
 
     receive_thread.start()
     process_thread.start()

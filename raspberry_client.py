@@ -46,7 +46,7 @@ def main():
     ca_cert_path = "assets/ssl/ca.crt"
 
     # Setup SSL connection
-    secure_socket = setup_ssl_client(server_ip, server_port, ca_cert_path)
+    secure_socket = setup_ssl_client(server_ip, int(server_port), ca_cert_path)
     if not secure_socket:
         print("Failed to establish SSL connection. Exiting.")
         return

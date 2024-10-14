@@ -1,4 +1,4 @@
-# Train Density Monitor - Real Time System (RTS)
+# MetroMantap: Real-Time Crowd Management System for Railway Stations
 
 <h1 align="center" style="justify-content: center; align-items: center;">
   <img src="/assets/images/footage_small.gif" style="width:100%;;"/>
@@ -30,39 +30,41 @@
 
 4. In `InfluxDB UI`, setup user account with org `NextGen Hackathon` to obtain `All Access API Token`, save the token
 
-5. Under `Dashboard`, `Create Dashboard > Add a Template`, paste this [URL](https://raw.githubusercontent.com/Vincexodus/Train-Density-Monitor-RTS/main/assets/train_density_monitor_dashboard.json)
+5. In `InfluxDB UI > Load Data > Buckets`, create 2 buckets `main` and `rasp-pi`
 
-6. Open new terminal, clone the repo and navigate to root directory
+6. Under `Dashboard`, `Create Dashboard > Add a Template`, paste this [URL](https://raw.githubusercontent.com/Vincexodus/MetroMantap/main/assets/train_density_monitor_dashboard.json)
+
+7. Open new terminal, clone the repo and navigate to root directory
 
    ```bash
-   git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
+   git clone https://github.com/Vincexodus/MetroMantap.git && cd .\MetroMantap\
    ```
 
-7. Duplicate `.env.example` and rename the duplicated file to `.env.local`, replace the values accordingly
+8. Duplicate `.env.example` and rename the duplicated file to `.env.local`, replace the values accordingly
 
-8. Install [OpenSSL](https://slproweb.com/products/Win32OpenSSL.html) and generate self-signed ssl cert
+9. Install [OpenSSL](https://slproweb.com/products/Win32OpenSSL.html) and generate self-signed ssl cert
 
    ```bash
    # root directory
    cd assets && ./ssl_cert.sh
    ```
 
-9. Copy generated folder called `ssl` to Raspberry PI.
+10. Copy generated folder called `ssl` to Raspberry PI.
 
-10. Create virtual python environment and activate it
+11. Create virtual python environment and activate it
 
     ```bash
     virtualenv venv
     venv\Scripts\activate
     ```
 
-11. Download required python modules
+12. Download required python modules
 
     ```bash
     pip install -r requirements.txt
     ```
 
-12. Run server script
+13. Run server script
 
     ```bash
     py pc_server.py
@@ -94,7 +96,7 @@
 4. Open new terminal, clone the repo and install python modules
 
    ```bash
-   git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
+   git clone https://github.com/Vincexodus/MetroMantap.git && cd .\MetroMantap\
    sudo pip install opencv-python spidev ssl
    ```
 
