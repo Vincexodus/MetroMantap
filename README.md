@@ -40,20 +40,29 @@
 
 7. Duplicate `.env.example` and rename the duplicated file to `.env.local`, replace the values accordingly
 
-8. Create virtual python environment and activate it
+8. Install [OpenSSL](https://slproweb.com/products/Win32OpenSSL.html) and generate self-signed ssl cert
 
    ```bash
-   virtualenv venv
-   venv\Scripts\activate
+   # root directory
+   cd assets && ./ssl_cert.sh
    ```
 
-9. Download required python modules
+9. Copy generated folder called `ssl` to Raspberry PI.
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+10. Create virtual python environment and activate it
 
-10. Run server script
+    ```bash
+    virtualenv venv
+    venv\Scripts\activate
+    ```
+
+11. Download required python modules
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+12. Run server script
 
     ```bash
     py pc_server.py
@@ -86,7 +95,7 @@
 
    ```bash
    git clone https://github.com/Vincexodus/Train-Density-Monitor-RTS.git && cd .\Train-Density-Monitor-RTS\
-   sudo pip install opencv-python spidev
+   sudo pip install opencv-python spidev ssl
    ```
 
 5. Enable SPI on the Raspberry Pi

@@ -1,18 +1,20 @@
 import os
+import queue
 import time
 import socket
 import struct
 import pickle
 import numpy as np
 import cv2
-import speedtest
 import torch
 import ssl
+from datetime import datetime
 from dotenv import load_dotenv
 from ultralytics import YOLO
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from object_classes import classNames
+import threading
 
 def calculate_posture_angle(a, b, c):
     a = np.array(a)
@@ -50,14 +52,6 @@ def detect_face_direction(keypoints):
     elif nose_y > max(left_eye_y, right_eye_y):
         return "Down"
 
-def run_speedtest():
-    st = speedtest.Speedtest()
-    st.get_best_server()
-    download_speed = st.download() / 1_000_000  # Convert from bits/s to Mbits/s
-    upload_speed = st.upload() / 1_000_000  # Convert from bits/s to Mbits/s
-    ping = st.results.ping
-    return download_speed, upload_speed, ping
-
 # Load environment variables
 def load_env_variables():
     load_dotenv('.env.local')
@@ -92,7 +86,7 @@ def setup_ssl_socket(host_ip, port):
     # Accept connection
     client_socket, addr = secure_socket.accept()
     print(f"Connection from {addr}")
-    return secure_socket, client_socket, addr
+    return client_socket
 
 def handle_incoming_data(client_socket, payload_size, data):
     while len(data) < payload_size:
@@ -122,7 +116,7 @@ def handle_incoming_data(client_socket, payload_size, data):
 
     return pickle.loads(serialized_data), data
 
-def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_fsr_values, c1_status, c2_status, c1_people_count, c2_people_count, download_speed, upload_speed, ping, last_write_time, current_time):
+def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_fsr_values, c1_status, c2_status, c1_people_count, c2_people_count, last_write_time, current_time):
     if current_time - last_write_time >= 1:
         sensor_point = (Point("sensor_data")
                         .field("one_way_latency", one_way_latency)
@@ -133,10 +127,7 @@ def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_f
                         .field("c1_status", c1_status)
                         .field("c2_status", c2_status)
                         .field("c1_person", c1_people_count)
-                        .field("c2_person", c2_people_count)
-                        .field("download_speed", download_speed)
-                        .field("upload_speed", upload_speed)
-                        .field("ping", ping))
+                        .field("c2_person", c2_people_count))
         write_api.write(bucket=bucket, org=org, record=sensor_point)
         last_write_time = current_time
     return last_write_time
@@ -187,8 +178,95 @@ def annotate_frame(index, frame, status, people_count, one_way_latency, yolo_lat
     cv2.putText(frame, f"YOLO Inference Time: {yolo_latency:.4f} s", (5, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
     cv2.putText(frame, f"FPS: {fps:.2f}", (5, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 1)
 
+def receive_frames(client_socket, payload_size, frame_queue):
+    data = b""
+    while True:
+        received_data, data = handle_incoming_data(client_socket, payload_size, data)
+        if not received_data:
+            break
+
+        # Push frames into the queue for processing
+        try:
+            frame_queue.put_nowait(received_data)
+        except queue.Full:
+            current_time = datetime.fromtimestamp(time.time())
+            print(f"{current_time}: Frame queue is full. Dropping frame.")
+
+def process_frames(frame_queue, model, write_api, config, last_write_time, skip_interval=5):
+    frame_counter = 0  # Initialize a counter
+
+    while True:
+        try:
+            received_data = frame_queue.get(timeout=1)  # Wait for a frame from the queue
+        except queue.Empty:
+            continue
+
+        frame_counter += 1
+
+        # Only process the frame if the counter is a multiple of skip_interval
+        if frame_counter % skip_interval != 0:
+            continue  # Skip this frame and move on to the next one
+
+        start_time = time.time()
+        receive_time = time.time()
+
+        send_time = received_data['send_timestamp']
+        c1_status = received_data['c1_status']
+        c2_status = received_data['c2_status']
+        c1_frame = cv2.imdecode(received_data['frame1'], cv2.IMREAD_COLOR)
+        c2_frame = cv2.imdecode(received_data['frame2'], cv2.IMREAD_COLOR)
+
+        # Resize frames
+        original_height_c1, original_width_c1 = c1_frame.shape[:2]
+        original_height_c2, original_width_c2 = c2_frame.shape[:2]
+        c1_frame = cv2.resize(c1_frame, (original_width_c1 // 2, original_height_c1 // 2))
+        c2_frame = cv2.resize(c2_frame, (original_width_c2 // 2, original_height_c2 // 2))
+
+        c1_fsr_values = received_data['c1_fsr']
+        c2_fsr_values = received_data['c2_fsr']
+
+        # Calculate latency
+        one_way_latency = (receive_time - send_time) / 2
+
+        # Process both frames
+        c1_frame, c1_people_count, c1_yolo_latency = process_single_frame(c1_frame, model)
+        c2_frame, c2_people_count, c2_yolo_latency = process_single_frame(c2_frame, model)
+
+        # Calculate frame processing time and FPS
+        frame_time = time.time() - start_time
+        fps = 1 / frame_time if frame_time > 0 else 0
+
+        # Annotate frames
+        annotate_frame(0, c1_frame, c1_status, c1_people_count, one_way_latency, c1_yolo_latency, fps)
+        annotate_frame(1, c2_frame, c2_status, c2_people_count, one_way_latency, c2_yolo_latency, fps)
+
+        # Display both frames
+        cv2.imshow('Cabin 1 Video Stream with Prediction', c1_frame)
+        cv2.imshow('Cabin 2 Video Stream with Prediction', c2_frame)
+
+        # Perform speed test periodically
+        current_time = time.time()
+
+        # Write data to InfluxDB
+        last_write_time = write_to_influx(
+            write_api,
+            config['influxdb_bucket'],
+            config['influxdb_org'],
+            one_way_latency,
+            c1_fsr_values,
+            c2_fsr_values,
+            c1_status,
+            c2_status,
+            c1_people_count,
+            c2_people_count,
+            last_write_time,
+            current_time
+        )
+
+        if cv2.waitKey(33) & 0xFF == ord('q'):
+            break
+
 def main():
-    # Use GPU for prediction
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = YOLO("assets/YOLOv8n-pose.pt")
     model = model.to(device)
@@ -196,92 +274,21 @@ def main():
     config = load_env_variables()
     write_api = initialize_influxdb(config['influxdb_url'], config['influxdb_token'], config['influxdb_org'])
     
-    server_socket, client_socket, addr = setup_ssl_socket(config['host_ip'], config['port'])
-    print(f"Connection from: {addr}")
+    client_socket = setup_ssl_socket(config['host_ip'], config['port'])
 
     payload_size = struct.calcsize("!L")
-    data = b""
     last_write_time = time.time()
-    last_speedtest_time = time.time()
-    speedtest_interval = 60  # Interval to run speed test
 
-    try:
-        while True:
-            received_data, data = handle_incoming_data(client_socket, payload_size, data)
-            if not received_data:
-                break
+    frame_queue = queue.Queue(maxsize=20)
 
-            start_time = time.time()
-            receive_time = time.time()
+    receive_thread = threading.Thread(target=receive_frames, args=(client_socket, payload_size, frame_queue))
+    process_thread = threading.Thread(target=process_frames, args=(frame_queue, model, write_api, config, last_write_time))
 
-            send_time = received_data['send_timestamp']
-            c1_status = received_data['c1_status']
-            c2_status = received_data['c2_status']
-            c1_frame = cv2.imdecode(received_data['frame1'], cv2.IMREAD_COLOR)
-            c2_frame = cv2.imdecode(received_data['frame2'], cv2.IMREAD_COLOR)
+    receive_thread.start()
+    process_thread.start()
 
-            # Resize to half of the original size
-            original_height_c1, original_width_c1 = c1_frame.shape[:2]
-            original_height_c2, original_width_c2 = c2_frame.shape[:2]
-
-            c1_frame = cv2.resize(c1_frame, (original_width_c1 // 2, original_height_c1 // 2))
-            c2_frame = cv2.resize(c2_frame, (original_width_c2 // 2, original_height_c2 // 2))
-
-            c1_fsr_values = received_data['c1_fsr']
-            c2_fsr_values = received_data['c2_fsr']
-
-            # Capture reception time
-            one_way_latency = (receive_time - send_time) / 2
-
-            # Process both frames
-            c1_frame, c1_people_count, c1_yolo_latency = process_single_frame(c1_frame, model)
-            c2_frame, c2_people_count, c2_yolo_latency = process_single_frame(c2_frame, model)
-
-            # Calculate frame processing time and FPS
-            frame_time = time.time() - start_time
-            fps = 1 / frame_time if frame_time > 0 else 0
-
-            # Add status and inference time to both frames
-            annotate_frame(0, c1_frame, c1_status, c1_people_count, one_way_latency, c1_yolo_latency, fps)
-            annotate_frame(1, c2_frame, c2_status, c2_people_count, one_way_latency, c2_yolo_latency, fps)
-
-            # Display both frames
-            cv2.imshow('Cabin 1 Video Stream with Prediction', c1_frame)
-            cv2.imshow('Cabin 2 Video Stream with Prediction', c2_frame)
-
-            # Run speed test periodically
-            current_time = time.time()
-            if current_time - last_speedtest_time >= speedtest_interval:
-                download_speed, upload_speed, ping = run_speedtest()
-                last_speedtest_time = current_time
-            else:
-                download_speed = upload_speed = ping = None
-
-            last_write_time = write_to_influx(
-                write_api,
-                config['influxdb_bucket'],
-                config['influxdb_org'],
-                one_way_latency,
-                c1_fsr_values,
-                c2_fsr_values,
-                c1_status,
-                c2_status,
-                c1_people_count,
-                c2_people_count,
-                download_speed,
-                upload_speed,
-                ping,
-                last_write_time,
-                current_time
-            )
-
-            if cv2.waitKey(33) & 0xFF == ord('q'):
-                break
-
-    finally:
-        client_socket.close()
-        server_socket.close()
-        cv2.destroyAllWindows()
+    receive_thread.join()
+    process_thread.join()
 
 if __name__ == "__main__":
     main()

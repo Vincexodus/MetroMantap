@@ -1,9 +1,6 @@
 numpy
-ssl
-ultralytics
-python-dotenv
 opencv-python
-speedtest-cli
-influxdb-client
+torch
 ultralytics
-safetensors
+influxdb-client
+python-dotenv
