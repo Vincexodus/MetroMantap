@@ -153,6 +153,28 @@ def write_to_influx(write_api, bucket, org, one_way_latency, c1_fsr_values, c2_f
         except requests.RequestException as e:
             print(f"Error during GET request: {e}")
 
+        try:
+            response = requests.get(os.getenv("SOCKET_HOST_IP") + ":" + 8000 + "/predictions/")
+            if response.status_code == 200:
+                latest_ridership = response.json()
+                
+                # Get the last item of each parent item
+                last_items = {}
+                for key, value in latest_ridership.items():
+                    if isinstance(value, list) and value:
+                        last_items[key] = value[-1]
+                
+                # Create the ridership point with the last items
+                ridership_point = Point("prediction_data")
+                for key, value in last_items.items():
+                    ridership_point = ridership_point.field(key, value.get('Predicted_Passengers'))
+                
+                write_api.write(bucket=bucket, org=org, record=ridership_point)
+            else:
+                print(f"GET request failed with status code: {response.status_code}")
+        except requests.RequestException as e:
+            print(f"Error during GET request: {e}")
+
         # Update the last_get_time to the current time
         last_get_time = current_time
 
@@ -293,9 +315,9 @@ def process_frames(frame_queue, model, write_api, config, last_write_time, last_
             break
 
 def main():
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = YOLO("assets/YOLOv8n-pose.pt")
-    model = model.to(device)
+    # model = model.to(torch.device)
 
     config = load_env_variables()
     write_api = initialize_influxdb(config['influxdb_url'], config['influxdb_token'], config['influxdb_org'])
