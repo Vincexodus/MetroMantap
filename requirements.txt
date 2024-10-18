@@ -1,7 +1,6 @@
 numpy
 requests
 opencv-python
-torch
 ultralytics
 influxdb-client
 python-dotenv

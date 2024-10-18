@@ -18,6 +18,11 @@
 
 ### Server Setup - Central Processing (PC)
 
+Pre-requisites:
+
+- [PyTorch](https://pytorch.org/get-started/previous-versions/)
+- [Nvidia CUDA Toolkit](https://developer.nvidia.com/cuda-downloads)  
+
 1. Install [InfluxDB](https://docs.influxdata.com/influxdb/v2/install/?t=Windows#download-and-install-influxdb-v2) and extract the zip to `C:\Program Files\InfluxData\`, rename and move all files to parent folder
 
 2. Start InfluxDB
@@ -114,3 +119,4 @@
 
 - [How to Setup a Raspberry Pi Pressure Pad (FSR)](https://pimylifeup.com/raspberry-pi-pressure-pad/)
 - [Monitoring Your Raspberry Pi System using InfluxDB Telegraf](https://randomnerdtutorials.com/monitor-raspberry-pi-influxdb-telegraf/)
+- [Easy Step-by-Step Guide to Installing CUDA for PyTorch](https://medium.com/@fernandopalominocobo/installing-cuda-for-pytorch-easily-explained-windows-users-4d3b7db5f2e0)
