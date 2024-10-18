@@ -18,7 +18,7 @@
 
 ### Server Setup - Central Processing (PC)
 
-Pre-requisites:
+Pre-requisites:dd
 
 - [PyTorch](https://pytorch.org/get-started/previous-versions/)
 - [Nvidia CUDA Toolkit](https://developer.nvidia.com/cuda-downloads)  
