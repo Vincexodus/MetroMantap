@@ -18,9 +18,9 @@
 
 ### Server Setup - Central Processing (PC)
 
-Pre-requisites:dd
+Pre-requisites:
 
-- [PyTorch](https://pytorch.org/get-started/previous-versions/)
+- [PyTorch](https://pytorch.org/get-started/pytorch-2.0/#requirements)
 - [Nvidia CUDA Toolkit](https://developer.nvidia.com/cuda-downloads)  
 
 1. Install [InfluxDB](https://docs.influxdata.com/influxdb/v2/install/?t=Windows#download-and-install-influxdb-v2) and extract the zip to `C:\Program Files\InfluxData\`, rename and move all files to parent folder
