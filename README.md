@@ -1,27 +1,30 @@
 # MetroMantap: Real-Time Crowd Management System for Railway Stations
 
-<h1 align="center" style="justify-content: center; align-items: center;">
+<!-- <h1 align="center" style="justify-content: center; align-items: center;">
   <img src="/assets/images/footage_small.gif" style="width:100%;;"/>
   <img src="/assets/images/dashboard_small.gif" style="width:775px;"/>
-</h1>
+</h1> -->
 
 <p align="center">
   <i align="center">Real-Time Crowd Management System for train stations using sensor technology, AI-driven analytics, and real-time data processing to improve passenger flow, reduce congestion, and optimize train operations and scheduling</i>
 </p>
 
-<!-- ### To-Do List
+## Future Enhancements
 
-| Task                                      | Status                 |
-| ----------------------------------------- | ---------------------- |
-| Batch Size Prediction, Async I/O, Vetorize function, Threading, Stream Buffer | ✨ Enhancements                  |
-| Security measure for socket communication | ❌ Not needed yet      | -->
+- [ ] LTSM Prediction API (dashboard)
+- [ ] Color grouping for passengers (dashboard)
+- [ ] Asymmetric Encryption
+- [ ] Merge LSTM repo to this & housekeeping
+- [ ] User Manual
 
-### Server Setup - Central Processing (PC)
+## Server Setup - Central Processing (PC)
 
-Pre-requisites:
+### Pre-requisites:
 
 - [PyTorch](https://pytorch.org/get-started/pytorch-2.0/#requirements)
-- [Nvidia CUDA Toolkit](https://developer.nvidia.com/cuda-downloads)  
+- [Nvidia CUDA Toolkit](https://developer.nvidia.com/cuda-downloads)
+
+### Setup
 
 1. Install [InfluxDB](https://docs.influxdata.com/influxdb/v2/install/?t=Windows#download-and-install-influxdb-v2) and extract the zip to `C:\Program Files\InfluxData\`, rename and move all files to parent folder
 
@@ -69,13 +72,13 @@ Pre-requisites:
     pip install -r requirements.txt
     ```
 
-13. Run server script
+13. Run server script (recommend with Pytorch + Cuda installed)
 
     ```bash
     py pc_server.py
     ```
 
-### Client Setup - Raspberry Pi 4
+## Client Setup - Raspberry Pi 4
 
 1. Install telegraf
 
@@ -115,7 +118,7 @@ Pre-requisites:
 
 7. Run client script `raspberry_client.py` in Thonny IDE
 
-### References
+## References
 
 - [How to Setup a Raspberry Pi Pressure Pad (FSR)](https://pimylifeup.com/raspberry-pi-pressure-pad/)
 - [Monitoring Your Raspberry Pi System using InfluxDB Telegraf](https://randomnerdtutorials.com/monitor-raspberry-pi-influxdb-telegraf/)
