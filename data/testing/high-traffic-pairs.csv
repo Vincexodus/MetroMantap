@@ -1,0 +1,571 @@
+Origin,Destination,Date,A_to_B Daily Passengers,B_to_A Daily Passengers
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-07,1588,1767.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-08,1771,1916.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-09,1820,1824.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-10,1085,956.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-11,2035,2393.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-12,1555,1776.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-13,1593,1754.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-14,1620,1780.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-15,1699,1872.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-16,2035,2193.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-17,2862,3453.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-18,2232,2475.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-19,1591,1793.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-20,1580,1816.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-21,1572,1626.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-22,1459,1705.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-23,2137,2331.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-24,2524,2963.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-25,2147,2302.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-26,1424,1625.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-27,1533,1734.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-28,1598,1663.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-29,1665,1703.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-30,2326,2646.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-08-31,3244,4277.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-01,2213,2553.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-02,1531,1653.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-03,1496,1658.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-04,1547,1673.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-05,1705,1843.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-06,0,973.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-07,2671,2936.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-08,2014,2404.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-09,1424,1591.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-10,1318,1497.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-11,1605,1648.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-12,1598,1673.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-13,1927,2068.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-14,2869,3681.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-15,3881,4636.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-16,3568,4590.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-17,2293,2826.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-18,2230,2489.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-19,2324,2478.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-20,3502,3662.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-21,2845,3463.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-22,2259,2607.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-23,1422,1641.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-24,1553,1649.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-25,1606,1613.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-26,1733,1834.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-27,2285,2318.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-28,2913,3556.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-29,2172,2430.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-09-30,1561,1731.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-10-01,1554,1761.0
+KG18: Bukit Bintang,KG20: Tun Razak Exchange,2024-10-02,1600,1852.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-07,1767,1588.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-08,1916,1771.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-09,1824,1820.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-10,956,1085.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-11,2393,2035.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-12,1776,1555.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-13,1754,1593.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-14,1780,1620.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-15,1872,1699.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-16,2193,2035.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-17,3453,2862.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-18,2475,2232.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-19,1793,1591.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-20,1816,1580.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-21,1626,1572.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-22,1705,1459.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-23,2331,2137.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-24,2963,2524.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-25,2302,2147.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-26,1625,1424.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-27,1734,1533.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-28,1663,1598.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-29,1703,1665.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-30,2646,2326.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-08-31,4277,3244.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-01,2553,2213.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-02,1653,1531.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-03,1658,1496.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-04,1673,1547.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-05,1843,1705.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-06,973,0.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-07,2936,2671.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-08,2404,2014.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-09,1591,1424.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-10,1497,1318.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-11,1648,1605.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-12,1673,1598.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-13,2068,1927.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-14,3681,2869.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-15,4636,3881.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-16,4590,3568.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-17,2826,2293.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-18,2489,2230.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-19,2478,2324.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-20,3662,3502.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-21,3463,2845.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-22,2607,2259.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-23,1641,1422.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-24,1649,1553.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-25,1613,1606.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-26,1834,1733.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-27,2318,2285.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-28,3556,2913.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-29,2430,2172.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-09-30,1731,1561.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-10-01,1761,1554.0
+KG20: Tun Razak Exchange,KG18: Bukit Bintang,2024-10-02,1852,1600.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-07,2836,3297.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-08,2771,3116.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-09,2705,3056.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-10,1369,1645.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-11,980,1141.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-12,2474,2837.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-13,2614,2857.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-14,2731,3081.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-15,2779,3021.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-16,2725,2990.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-17,1372,1560.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-18,1014,1151.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-19,2283,2654.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-20,2795,3050.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-21,2576,3046.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-22,2772,3797.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-23,2850,3590.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-24,1622,1726.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-25,1199,1389.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-26,2679,2671.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-27,2727,3087.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-28,2677,3137.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-29,2619,2902.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-30,2928,3065.0
+KJ09: Ampang Park,KJ10: KLCC,2024-08-31,1748,1975.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-01,946,1019.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-02,2296,2501.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-03,2563,2804.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-04,2727,3075.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-05,2680,2973.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-06,2627,2801.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-07,1194,1360.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-08,937,1141.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-09,2472,2806.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-10,2460,2682.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-11,2755,2999.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-12,2546,2762.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-13,2582,2949.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-14,1639,2426.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-15,1672,1866.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-16,1320,1513.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-17,1401,1521.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-18,2625,2847.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-19,2693,2873.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-20,2599,3019.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-21,1369,1528.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-22,841,1042.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-23,2254,3207.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-24,2505,2817.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-25,2854,3298.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-26,3064,3320.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-27,3016,3522.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-28,1411,1602.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-29,1069,1097.0
+KJ09: Ampang Park,KJ10: KLCC,2024-09-30,2445,2730.0
+KJ09: Ampang Park,KJ10: KLCC,2024-10-01,2807,3752.0
+KJ09: Ampang Park,KJ10: KLCC,2024-10-02,2958,3778.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-07,3297,2836.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-08,3116,2771.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-09,3056,2705.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-10,1645,1369.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-11,1141,980.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-12,2837,2474.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-13,2857,2614.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-14,3081,2731.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-15,3021,2779.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-16,2990,2725.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-17,1560,1372.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-18,1151,1014.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-19,2654,2283.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-20,3050,2795.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-21,3046,2576.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-22,3797,2772.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-23,3590,2850.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-24,1726,1622.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-25,1389,1199.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-26,2671,2679.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-27,3087,2727.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-28,3137,2677.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-29,2902,2619.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-30,3065,2928.0
+KJ10: KLCC,KJ09: Ampang Park,2024-08-31,1975,1748.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-01,1019,946.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-02,2501,2296.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-03,2804,2563.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-04,3075,2727.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-05,2973,2680.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-06,2801,2627.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-07,1360,1194.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-08,1141,937.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-09,2806,2472.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-10,2682,2460.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-11,2999,2755.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-12,2762,2546.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-13,2949,2582.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-14,2426,1639.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-15,1866,1672.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-16,1513,1320.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-17,1521,1401.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-18,2847,2625.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-19,2873,2693.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-20,3019,2599.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-21,1528,1369.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-22,1042,841.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-23,3207,2254.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-24,2817,2505.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-25,3298,2854.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-26,3320,3064.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-27,3522,3016.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-28,1602,1411.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-29,1097,1069.0
+KJ10: KLCC,KJ09: Ampang Park,2024-09-30,2730,2445.0
+KJ10: KLCC,KJ09: Ampang Park,2024-10-01,3752,2807.0
+KJ10: KLCC,KJ09: Ampang Park,2024-10-02,3778,2958.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-07,2035,2244.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-08,1990,2235.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-09,2207,2419.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-10,1961,2130.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-11,1432,1703.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-12,1961,2134.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-13,1973,2162.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-14,1864,2079.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-15,2132,2225.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-16,2062,2129.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-17,1721,1742.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-18,1526,1674.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-19,1850,1978.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-20,1915,2133.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-21,2050,2158.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-22,2016,2081.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-23,2192,2180.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-24,2029,2177.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-25,1698,1703.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-26,1731,1940.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-27,1890,1999.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-28,2050,2010.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-29,2016,2039.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-30,1918,2381.0
+KJ10: KLCC,KJ15: KL Sentral,2024-08-31,2174,2471.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-01,1514,1637.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-02,1485,1925.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-03,1395,2058.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-04,1930,1961.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-05,1891,1953.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-06,1882,1999.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-07,1514,1668.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-08,1263,1434.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-09,1824,1983.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-10,1879,1968.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-11,1707,1925.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-12,1586,1890.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-13,2004,1985.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-14,3225,5625.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-15,2360,2750.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-16,2062,2201.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-17,1249,1652.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-18,2074,2249.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-19,2146,2178.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-20,1969,2258.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-21,1506,1635.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-22,1197,1277.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-23,1686,1730.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-24,1651,1910.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-25,1877,2052.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-26,2045,2335.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-27,2065,2265.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-28,1686,1896.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-29,1301,1440.0
+KJ10: KLCC,KJ15: KL Sentral,2024-09-30,1713,1926.0
+KJ10: KLCC,KJ15: KL Sentral,2024-10-01,1849,2080.0
+KJ10: KLCC,KJ15: KL Sentral,2024-10-02,1750,2083.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-07,2244,2035.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-08,2235,1990.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-09,2419,2207.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-10,2130,1961.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-11,1703,1432.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-12,2134,1961.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-13,2162,1973.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-14,2079,1864.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-15,2225,2132.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-16,2129,2062.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-17,1742,1721.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-18,1674,1526.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-19,1978,1850.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-20,2133,1915.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-21,2158,2050.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-22,2081,2016.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-23,2180,2192.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-24,2177,2029.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-25,1703,1698.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-26,1940,1731.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-27,1999,1890.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-28,2010,2050.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-29,2039,2016.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-30,2381,1918.0
+KJ15: KL Sentral,KJ10: KLCC,2024-08-31,2471,2174.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-01,1637,1514.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-02,1925,1485.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-03,2058,1395.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-04,1961,1930.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-05,1953,1891.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-06,1999,1882.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-07,1668,1514.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-08,1434,1263.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-09,1983,1824.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-10,1968,1879.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-11,1925,1707.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-12,1890,1586.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-13,1985,2004.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-14,5625,3225.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-15,2750,2360.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-16,2201,2062.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-17,1652,1249.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-18,2249,2074.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-19,2178,2146.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-20,2258,1969.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-21,1635,1506.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-22,1277,1197.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-23,1730,1686.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-24,1910,1651.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-25,2052,1877.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-26,2335,2045.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-27,2265,2065.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-28,1896,1686.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-29,1440,1301.0
+KJ15: KL Sentral,KJ10: KLCC,2024-09-30,1926,1713.0
+KJ15: KL Sentral,KJ10: KLCC,2024-10-01,2080,1849.0
+KJ15: KL Sentral,KJ10: KLCC,2024-10-02,2083,1750.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-07,1092,1085.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-08,1305,1206.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-09,1278,1262.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-10,1664,1584.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-11,1969,1716.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-12,1369,1227.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-13,1181,1047.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-14,1139,1068.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-15,1095,1117.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-16,1202,1106.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-17,1383,1303.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-18,1955,1827.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-19,1215,1131.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-20,1115,1037.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-21,1171,1061.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-22,978,890.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-23,1097,942.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-24,1479,1344.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-25,1766,1585.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-26,1158,962.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-27,1002,925.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-28,1071,1027.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-29,1036,985.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-30,1362,1255.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-08-31,2785,2467.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-01,1927,722.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-02,942,618.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-03,993,1055.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-04,1097,994.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-05,1139,959.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-06,1234,1132.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-07,1533,1351.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-08,1934,1808.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-09,1253,1166.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-10,1179,1089.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-11,1114,1025.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-12,1028,917.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-13,1123,941.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-14,1516,1411.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-15,2507,2383.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-16,1960,1988.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-17,1222,1101.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-18,1196,1067.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-19,1138,1056.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-20,1202,1098.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-21,1278,1286.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-22,1631,1633.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-23,1003,971.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-24,1044,926.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-25,954,887.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-26,1028,955.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-27,1129,1081.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-28,1352,1244.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-29,1766,1712.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-09-30,1174,1123.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-10-01,1158,1005.0
+MR10: Chow Kit,MR06: Bukit Bintang,2024-10-02,1058,995.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-07,184,183.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-08,165,176.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-09,190,249.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-10,187,116.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-11,191,76.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-12,211,194.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-13,160,184.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-14,178,182.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-15,163,204.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-16,168,264.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-17,317,374.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-18,176,109.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-19,165,169.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-20,170,147.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-21,156,173.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-22,145,172.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-23,183,226.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-24,2745,2661.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-25,206,168.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-26,219,207.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-27,159,162.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-28,156,157.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-29,166,192.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-30,206,232.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-08-31,65,117.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-01,121,129.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-02,175,153.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-03,163,173.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-04,260,291.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-05,142,180.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-06,153,219.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-07,304,193.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-08,376,303.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-09,176,188.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-10,162,203.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-11,198,175.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-12,271,229.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-13,214,360.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-14,137,286.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-15,214,192.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-16,147,126.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-17,1316,1199.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-18,206,215.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-19,180,181.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-20,257,348.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-21,118,116.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-22,347,289.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-23,224,198.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-24,175,177.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-25,187,206.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-26,180,198.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-27,170,245.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-28,136,139.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-29,185,97.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-09-30,188,189.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-10-01,173,178.0
+SP15: Bandar Tasik Selatan,SP17: Bukit Jalil,2024-10-02,158,195.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-07,24,26.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-08,32,29.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-09,28,27.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-10,24,56.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-11,5,10.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-12,33,31.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-13,31,35.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-14,33,37.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-15,34,41.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-16,36,37.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-17,93,84.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-18,20,20.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-19,28,31.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-20,30,26.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-21,33,37.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-22,30,36.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-23,47,42.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-24,3078,3138.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-25,25,13.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-26,37,39.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-27,31,36.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-28,30,25.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-29,30,28.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-30,35,28.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-08-31,20,17.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-01,22,12.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-02,24,27.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-03,24,36.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-04,167,136.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-05,34,37.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-06,39,35.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-07,71,86.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-08,238,185.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-09,41,46.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-10,32,40.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-11,37,40.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-12,37,38.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-13,39,33.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-14,21,17.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-15,10,16.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-16,9,5.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-17,202,560.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-18,52,50.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-19,44,40.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-20,88,71.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-21,26,21.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-22,169,121.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-23,31,37.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-24,33,36.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-25,35,38.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-26,42,26.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-27,32,36.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-28,18,18.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-29,14,12.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-09-30,25,30.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-10-01,31,28.0
+SP17: Bukit Jalil,SP31: Putra Heights,2024-10-02,30,28.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-07,26,24.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-08,29,32.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-09,27,28.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-10,56,24.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-11,10,5.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-12,31,33.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-13,35,31.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-14,37,33.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-15,41,34.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-16,37,36.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-17,84,93.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-18,20,20.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-19,31,28.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-20,26,30.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-21,37,33.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-22,36,30.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-23,42,47.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-24,3138,3078.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-25,13,25.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-26,39,37.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-27,36,31.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-28,25,30.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-29,28,30.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-30,28,35.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-08-31,17,20.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-01,12,22.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-02,27,24.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-03,36,24.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-04,136,167.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-05,37,34.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-06,35,39.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-07,86,71.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-08,185,238.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-09,46,41.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-10,40,32.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-11,40,37.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-12,38,37.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-13,33,39.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-14,17,21.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-15,16,10.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-16,5,9.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-17,560,202.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-18,50,52.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-19,40,44.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-20,71,88.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-21,21,26.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-22,121,169.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-23,37,31.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-24,36,33.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-25,38,35.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-26,26,42.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-27,36,32.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-28,18,18.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-29,12,14.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-09-30,30,25.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-10-01,28,31.0
+SP31: Putra Heights,SP17: Bukit Jalil,2024-10-02,28,30.0
