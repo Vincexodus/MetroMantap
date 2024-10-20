@@ -1,9 +1,4 @@
-# MetroMantap: Real-Time Crowd Management System for Railway Stations
-
-<!-- <h1 align="center" style="justify-content: center; align-items: center;">
-  <img src="/assets/images/footage_small.gif" style="width:100%;;"/>
-  <img src="/assets/images/dashboard_small.gif" style="width:775px;"/>
-</h1> -->
+# MetroMantap
 
 <p align="center">
   <i align="center">Real-Time Crowd Management System for train stations using sensor technology, AI-driven analytics, and real-time data processing to improve passenger flow, reduce congestion, and optimize train operations and scheduling</i>
@@ -14,8 +9,8 @@
 - [ ] LTSM Prediction API (dashboard)
 - [ ] Color grouping for passengers (dashboard)
 - [ ] Asymmetric Encryption
+- [ ] Cabin exit gesture detection
 - [ ] Merge LSTM repo to this & housekeeping
-- [ ] User Manual
 
 ## Server Setup - Central Processing (PC)
 
@@ -72,7 +67,7 @@
     pip install -r requirements.txt
     ```
 
-13. Run server script (recommend with Pytorch + Cuda installed)
+13. Run server script (recommend with [PyTorch](https://pytorch.org/get-started/pytorch-2.0/#requirements) + [Cuda](https://developer.nvidia.com/cuda-downloads) installed)
 
     ```bash
     py pc_server.py
