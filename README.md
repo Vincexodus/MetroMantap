@@ -10,6 +10,7 @@
 - [ ] GET request from LSTM API (dashboard)
 - [ ] Asymmetric Encryption
 - [ ] Cabin exit gesture detection
+- [ ] Use GET request to scrape ridership data (LSTM)
 
 ## Server Setup - Central Processing (PC)
 
@@ -114,9 +115,9 @@
 
 ## LSTM Model Training and Inference
 
-1. **Data Collection**:
+1. Data Collection:
 
-   - Download the HTML file from https://data.gov.my/dashboard/rapid-explorer
+   - Download the HTML file from [data.gov.my dashboard](https://data.gov.my/dashboard/rapid-explorer)
    - Run the following commands to extract and scrape data:
 
    ```bash
@@ -126,20 +127,20 @@
       python data-scraping/monthly-ridership.py  # Query the OpenAPI for monthly ridership data
    ```
 
-2. **Data Preparation**:
+2. Data Preparation:
 
    - Use `data-preparation/prepare-data.py` to process and prepare the collected data
 
-3. **Model Training**:
+3. Model Training:
 
    - `model/lstm.py` is used to train the LSTM models for each OD pair
 
-4. **API**:
+4. API:
    - `api.py` provides an API interface for the trained models
-   - Open a new terminal
-   - Run the API using `uvicorn api:app --reload`
-   - This endpoint reads the `future_predictions.csv` file from each OD pair folder in the `model/lstm/` directory and returns the predictions as a JSON response.
-   - The API will be available at `http://0.0.0.0:8000/predictions/`.
+   - Open a new terminal and navigate to `ridership-LSTM` directory
+   - Start the app using `uvicorn api:app --reload`
+   - This endpoint reads the `future_predictions.csv` file from each OD pair folder in the `model/lstm/` directory and returns the predictions as a JSON response
+   - The API will be available at `http://0.0.0.0:8000/predictions/`
 
 ## References
 
