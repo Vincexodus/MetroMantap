@@ -1,0 +1,1 @@
+{"seq_length": 9, "use_cnn": false, "n_lstm_layers": 1, "lstm1_units": 207, "l2_1": 0.003204894921594745, "dropout1": 0.08513616676927516, "n_dense_layers": 1, "dense1_units": 68, "l2_dense_1": 2.940923505090464e-05, "dropout_dense1": 0.43816697956297335, "optimizer": "sgd", "learning_rate": 0.001994673390647086, "batch_size": 4}

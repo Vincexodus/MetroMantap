@@ -1,0 +1,1 @@
+{"seq_length": 10, "use_cnn": true, "conv_filters": 97, "conv_kernel": 4, "n_lstm_layers": 1, "lstm1_units": 175, "l2_1": 4.651197566288319e-06, "dropout1": 0.38362920870049994, "n_dense_layers": 1, "dense1_units": 128, "l2_dense_1": 2.9982646821553663e-05, "dropout_dense1": 0.29833038878354534, "optimizer": "rmsprop", "learning_rate": 0.0005377777865961718, "batch_size": 16}

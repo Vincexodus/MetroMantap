@@ -113,8 +113,33 @@
 
 7. Run client script `raspberry_client.py` in Thonny IDE
 
+## LSTM Model Training and Inference
+
+1. **Data Collection**:
+   - Download the HTML file from https://data.gov.my/dashboard/rapid-explorer
+   - Run `data-scraping/train-combination.py` to extract possible OD pair combinations
+   - Use `data-scraping/od-ridership.py` to scrape the latest daily OD ridership data
+   - Use `data-scraping/monthly-ridership.py` to query the OpenAPI for monthly ridership data
+
+2. **Data Preparation**:
+   - Use `data-preparation/prepare-data.py` to process and prepare the collected data
+
+3. **Model Training**:
+   - `model/lstm.py` is used to train the LSTM models for each OD pair
+
+4. **API**:
+   - `api.py` provides an API interface for the trained models
+   -  Run the API using `uvicorn api:app --reload`
+   -  This endpoint reads the `future_predictions.csv` file from each OD pair folder in the `model/lstm/` directory and returns the predictions as a JSON response.
+   -  The API will be available at `http://0.0.0.0:8000` or `http://192.168.1.100:8000` (depending on the commented line in the script).
+
 ## References
 
 - [How to Setup a Raspberry Pi Pressure Pad (FSR)](https://pimylifeup.com/raspberry-pi-pressure-pad/)
 - [Monitoring Your Raspberry Pi System using InfluxDB Telegraf](https://randomnerdtutorials.com/monitor-raspberry-pi-influxdb-telegraf/)
 - [Easy Step-by-Step Guide to Installing CUDA for PyTorch](https://medium.com/@fernandopalominocobo/installing-cuda-for-pytorch-easily-explained-windows-users-4d3b7db5f2e0)
+
+## Acknowledgments
+
+- Data source: [data.gov.my](https://data.gov.my)
+- This project was developed as part of the MMU ZTE 5G Hackathon
